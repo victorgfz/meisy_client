@@ -1,7 +1,7 @@
 export const LOGIN_CONSTANTS = {
   header: {
     title: 'Bem-vindo!',
-    subtitle: 'Acesse sua conta para gerenciar seu negócio',
+    subtitle: 'Acesse agora sua conta!',
   },
   form: {
     emailLabel: 'E-mail',
@@ -9,15 +9,14 @@ export const LOGIN_CONSTANTS = {
     passwordLabel: 'Senha',
     passwordPlaceholder: '••••••••',
     forgotPassword: 'Esqueceu a senha?',
-    submitButton: 'ENTRAR',
-  },
-  social: {
-    dividerText: 'ou entre com',
-    google: 'Google',
-    facebook: 'Facebook',
+    submitButton: 'Entrar',
   },
   signup: {
     prompt: 'Não tem uma conta?',
     link: 'Criar agora',
   },
+  validation: {
+    emailMessage: "Precisa ser um email válido",
+    passwordMessage: "Senha deve ter pelo menos 8 caracteres",
+  }
 } as const;

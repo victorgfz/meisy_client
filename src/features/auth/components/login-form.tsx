@@ -1,37 +1,45 @@
-import type { FormEvent } from 'react';
+import type { SubmitEventHandler } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
+import type { LoginFormValues } from '../hooks/use-login';
 import { LOGIN_CONSTANTS } from '../constants/login.constants';
+import { Eye, EyeOff } from 'lucide-react';
+import { ServerErrorBox } from './server-error-box';
 
 interface LoginFormProps {
-  email: string;
-  password: string;
+  form: UseFormReturn<LoginFormValues>;
   isLoading: boolean;
-  onEmailChange: (value: string) => void;
-  onPasswordChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  onForgotPassword: () => void;
+  onSubmit: SubmitEventHandler<HTMLFormElement>;
+  showPassword: boolean;
+  onTogglePasswordVisibility: () => void;
+  serverErrors: string[] | null;
 }
 
 export function LoginForm({
-  email,
-  password,
+  form,
   isLoading,
-  onEmailChange,
-  onPasswordChange,
   onSubmit,
-  onForgotPassword,
+  showPassword,
+  onTogglePasswordVisibility,
+  serverErrors
 }: LoginFormProps) {
   const {
     emailLabel,
     emailPlaceholder,
     passwordLabel,
     passwordPlaceholder,
-    forgotPassword,
     submitButton,
   } = LOGIN_CONSTANTS.form;
 
+  const { register, formState: { errors } } = form;
+
+  const getInputClass = (hasError: boolean) => {
+    return `w-full py-3.5 px-4 rounded-input border ${hasError ? 'border-red-500 focus:ring-red-500/30' : 'border-border focus:border-primary focus:ring-primary/30'} bg-white text-text-primary text-base placeholder:text-text-secondary outline-none focus:ring-1 transition-all duration-200`;
+  };
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 w-full">
-      {/* Email */}
+      {serverErrors && <ServerErrorBox message={serverErrors} />}
+
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
         <label
           htmlFor="login-email"
@@ -41,14 +49,15 @@ export function LoginForm({
         </label>
         <input
           id="login-email"
-          type="email"
-          value={email}
-          onChange={(e) => onEmailChange(e.target.value)}
+          type="text"
+          {...register('email')}
           placeholder={emailPlaceholder}
-          required
           autoComplete="email"
-          className="w-full py-3.5 px-4 rounded-input border border-border bg-white text-text-primary text-base placeholder:text-text-secondary outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all duration-200"
+          className={getInputClass(!!errors.email)}
         />
+        {errors.email && (
+          <span className="text-red-500 text-xs mt-1">{errors.email.message}</span>
+        )}
       </fieldset>
 
       {/* Password */}
@@ -59,28 +68,41 @@ export function LoginForm({
         >
           {passwordLabel}
         </label>
-        <input
-          id="login-password"
-          type="password"
-          value={password}
-          onChange={(e) => onPasswordChange(e.target.value)}
-          placeholder={passwordPlaceholder}
-          required
-          autoComplete="current-password"
-          className="w-full py-3.5 px-4 rounded-input border border-border bg-white text-text-primary text-base placeholder:text-text-secondary outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all duration-200"
-        />
+
+
+        <div className="relative w-full">
+
+          <input
+            id="login-password"
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            placeholder={passwordPlaceholder}
+            autoComplete="current-password"
+            className={`${getInputClass(!!errors.password)} pr-12`}
+          />
+          <button
+            type="button"
+            onClick={onTogglePasswordVisibility}
+            className="absolute inset-y-0 right-0 pr-4 flex items-center text-text-secondary hover:text-primary transition-colors cursor-pointer border-none bg-transparent"
+            aria-label="Toggle password visibility"
+          >
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" strokeWidth={1.5} />
+            ) : (
+              <Eye className="h-5 w-5" strokeWidth={1.5} />
+            )}
+          </button>
+        </div>
+
+
+
+
+        {errors.password && (
+          <span className="text-red-500 text-xs mt-1">{errors.password.message}</span>
+        )}
       </fieldset>
 
-      {/* Forgot password link */}
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={onForgotPassword}
-          className="text-sm text-primary font-medium bg-transparent border-none cursor-pointer hover:underline p-0"
-        >
-          {forgotPassword}
-        </button>
-      </div>
+
 
       {/* Submit */}
       <button

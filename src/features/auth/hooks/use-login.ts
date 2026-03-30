@@ -1,66 +1,86 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import { useForm, type UseFormReturn } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { LOGIN_CONSTANTS } from '../constants/login.constants';
+import { authService } from '../services/auth.service';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/auth.context';
+
+
+const { emailMessage, passwordMessage } = LOGIN_CONSTANTS.validation;
+
+const loginSchema = z.object({
+  email: z.email(emailMessage),
+  password: z.string().min(8, passwordMessage),
+});
+
+export type LoginFormValues = z.infer<typeof loginSchema>;
 
 interface UseLoginReturn {
-  email: string;
-  password: string;
+  form: UseFormReturn<LoginFormValues>;
   isLoading: boolean;
-  handleEmailChange: (value: string) => void;
-  handlePasswordChange: (value: string) => void;
-  handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleForgotPassword: () => void;
-  handleSocialLogin: (provider: 'google' | 'facebook') => void;
-  handleSignup: () => void;
+  onSubmit: (values: LoginFormValues) => void;
+  showPassword: boolean;
+  handleTogglePasswordVisibility: () => void;
+  serverErrors: string[] | null;
 }
 
 export function useLogin(): UseLoginReturn {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [serverErrors, setServerErrors] = useState<string[] | null>(null);
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
+
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);
 
-    // TODO: integrate with auth service
-    console.log('Login attempt:', { email, password });
 
-    setTimeout(() => {
+    try {
+      const result = await authService.login(values);
+      console.log('login success:', result);
+
+      if (result.token) {
+        login({
+          token: result.token,
+          name: result.name,
+          companyCode: result.companyCode
+        });
+      }
+
+      navigate('/dashboard/inputs');
+    } catch (error: any) {
+      console.error('Login error:', error.response.data.errorMessages);
+      const messages = error.response?.data?.errorMessages ?? ['Ocorreu um erro ao fazer login. Tente novamente.'];
+      setServerErrors(messages);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
-  const handleForgotPassword = () => {
-    // TODO: navigate to forgot-password route
-    console.log('Navigate to forgot password');
-  };
 
-  const handleSocialLogin = (provider: 'google' | 'facebook') => {
-    // TODO: integrate with social auth provider
-    console.log(`Social login with: ${provider}`);
-  };
-
-  const handleSignup = () => {
-    // TODO: navigate to signup route
-    console.log('Navigate to signup');
-  };
 
   return {
-    email,
-    password,
+    form,
     isLoading,
-    handleEmailChange,
-    handlePasswordChange,
-    handleSubmit,
-    handleForgotPassword,
-    handleSocialLogin,
-    handleSignup,
+    onSubmit,
+    showPassword,
+    handleTogglePasswordVisibility,
+    serverErrors
   };
 }
