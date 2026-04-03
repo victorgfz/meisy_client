@@ -74,7 +74,6 @@ export function useRegister(): UseRegisterReturn {
         password: values.password,
         companyCode: values.companyCode ? values.companyCode : null,
       });
-      console.log('Register success:', result);
 
       if (result.token) {
         login({
@@ -86,7 +85,6 @@ export function useRegister(): UseRegisterReturn {
 
       navigate('/dashboard/inputs');
     } catch (error: any) {
-      console.error('Register error:', error.response.data.errorMessages);
       const messages = error.response?.data?.errorMessages ?? ['Ocorreu um erro ao registrar. Tente novamente.'];
       setServerErrors(messages);
     } finally {

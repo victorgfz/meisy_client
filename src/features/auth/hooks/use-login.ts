@@ -48,12 +48,11 @@ export function useLogin(): UseLoginReturn {
   };
 
   const onSubmit = async (values: LoginFormValues) => {
+
     setIsLoading(true);
-
-
     try {
       const result = await authService.login(values);
-      console.log('login success:', result);
+
 
       if (result.token) {
         login({
@@ -65,7 +64,7 @@ export function useLogin(): UseLoginReturn {
 
       navigate('/dashboard/inputs');
     } catch (error: any) {
-      console.error('Login error:', error.response.data.errorMessages);
+
       const messages = error.response?.data?.errorMessages ?? ['Ocorreu um erro ao fazer login. Tente novamente.'];
       setServerErrors(messages);
     } finally {

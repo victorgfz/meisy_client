@@ -7,6 +7,10 @@ export function useInputs() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState<Input | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Input | null>(null);
 
   const fetchInputs = useCallback(async () => {
     try {
@@ -14,7 +18,7 @@ export function useInputs() {
       const response = await inputsService.getAll();
       setInputs(response);
     } catch (error) {
-      console.error('Failed to fetch inputs', error);
+
     } finally {
       setIsLoading(false);
     }
@@ -24,22 +28,24 @@ export function useInputs() {
     fetchInputs();
   }, [fetchInputs]);
 
-
-
-
   const ingredients = useMemo(() => inputs.filter(i => i.type === Number(0)), [inputs]);
   const packages = useMemo(() => inputs.filter(i => i.type === Number(1)), [inputs]);
 
-
   const handleEdit = useCallback((id: number) => {
-    console.log('Edit item:', id);
-    // Open edit modal/sheet logic here
-  }, []);
+    const item = inputs.find(i => i.id === id);
+    if (item) {
+      setItemToEdit(item);
+      setIsEditModalOpen(true);
+    }
+  }, [inputs]);
 
   const handleDelete = useCallback((id: number) => {
-    console.log('Delete item:', id);
-    // Delete logic or confirmation here
-  }, []);
+    const item = inputs.find(i => i.id === id);
+    if (item) {
+      setItemToDelete(item);
+      setIsDeleteModalOpen(true);
+    }
+  }, [inputs]);
 
   const handleCreate = useCallback(() => {
     setIsCreateModalOpen(true);
@@ -52,6 +58,12 @@ export function useInputs() {
     isLoading,
     isCreateModalOpen,
     setIsCreateModalOpen,
+    isEditModalOpen,
+    setIsEditModalOpen,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+    itemToEdit,
+    itemToDelete,
     fetchInputs,
     handleEdit,
     handleDelete,

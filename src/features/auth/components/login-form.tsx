@@ -3,7 +3,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { LoginFormValues } from '../hooks/use-login';
 import { LOGIN_CONSTANTS } from '../constants/login.constants';
 import { Eye, EyeOff } from 'lucide-react';
-import { ServerErrorBox } from './server-error-box';
+import { ServerErrorMessages } from '../../../components/server-error-messages';
 
 interface LoginFormProps {
   form: UseFormReturn<LoginFormValues>;
@@ -38,7 +38,7 @@ export function LoginForm({
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 w-full">
-      {serverErrors && <ServerErrorBox message={serverErrors} />}
+      {serverErrors && <ServerErrorMessages message={serverErrors} />}
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
         <label

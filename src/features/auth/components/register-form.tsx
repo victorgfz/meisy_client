@@ -3,7 +3,7 @@ import { User, Mail, Lock, Eye, EyeOff, Building2 } from 'lucide-react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { RegisterFormValues } from '../hooks/use-register';
 import { REGISTER_CONSTANTS } from '../constants/register.constants';
-import { ServerErrorBox } from './server-error-box';
+import { ServerErrorMessages } from '../../../components/server-error-messages';
 
 interface RegisterFormProps {
   form: UseFormReturn<RegisterFormValues>;
@@ -47,7 +47,7 @@ export function RegisterForm({
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4 w-full">
 
-      {serverErrors && <ServerErrorBox message={serverErrors} />}
+      {serverErrors && <ServerErrorMessages message={serverErrors} />}
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
         <label htmlFor="register-name" className="text-sm font-medium text-text-primary tracking-wide text-xs">
@@ -179,28 +179,7 @@ export function RegisterForm({
         </fieldset>
       )}
 
-      {/*
-      <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
-        <label htmlFor="register-confirm-password" className="text-sm font-medium text-text-primary tracking-wide text-xs">
-          {confirmPasswordLabel}
-        </label>
-        <div className="relative w-full">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <ShieldCheck className="h-5 w-5 text-text-secondary" strokeWidth={1.5} />
-          </div>
-          <input
-            id="register-confirm-password"
-            type={showPassword ? 'text' : 'password'}
-            {...register('confirmPassword')}
-            placeholder={confirmPasswordPlaceholder}
-            autoComplete="new-password"
-            className={getInputClass(!!errors.confirmPassword)}
-          />
-        </div>
-        {errors.confirmPassword && (
-          <span className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</span>
-        )}
-      </fieldset> */}
+
 
 
       <button

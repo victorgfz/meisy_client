@@ -25,7 +25,7 @@ export function DashboardHeader({ userName = 'Fulano', companyCode = "XXXXXX" }:
             <h1 className="text-lg font-normal leading-none">
               {DASHBOARD_CONSTANTS.greeting.replace('{name}', userName)}
             </h1>
-            <p className='text-sm font-light text-white/50'>Empresa: <span className='font-bold'>{companyCode}</span></p>
+            <p className='text-sm font-light text-white/50'>{companyCode}</p>
           </div>
 
         </div>

@@ -1,26 +1,26 @@
 import React from 'react';
 import { type UseFormReturn } from 'react-hook-form';
-import type { CreateInputFormValues } from '../hooks/use-create-input';
+import type { EditInputFormValues } from '../hooks/use-edit-input';
 import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 
 const { form: formConstants } = INPUTS_CONSTANTS;
 
-interface CreateInputFormProps {
-  form: UseFormReturn<CreateInputFormValues>;
+interface EditInputFormProps {
+  form: UseFormReturn<EditInputFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
-  onSubmit: (values: CreateInputFormValues) => void;
+  onSubmit: (values: EditInputFormValues) => void;
   onCancel: () => void;
 }
 
-export function CreateInputForm({
+export function EditInputForm({
   form,
   isLoading,
   serverErrors,
   onSubmit,
   onCancel,
-}: CreateInputFormProps) {
+}: EditInputFormProps) {
   const { register, watch, formState: { errors }, setValue } = form;
   const inputType = watch('inputType');
 
@@ -51,32 +51,29 @@ export function CreateInputForm({
       {serverErrors && <ServerErrorMessages message={serverErrors} />}
 
       {/* Radio Buttons for Type */}
-      <fieldset className="flex items-center justify-center gap-6 border-none p-0 m-0">
-        <label className="flex items-center gap-2 cursor-pointer group">
+      <fieldset className="flex items-center justify-center gap-6 border-none p-0 m-0 opacity-70">
+        <label className="flex items-center gap-2 cursor-not-allowed group">
           <input
             type="radio"
             value="ingredient"
             {...register('inputType')}
-            onChange={() => {
-              setValue('inputType', 'ingredient');
-              setValue('measurementUnit', 'g'); // reset correctly
-            }}
-            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 accent-primary"
+            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 accent-primary pointer-events-none"
+            tabIndex={-1}
+            disabled={true}
           />
-          <span className="text-sm font-medium text-gray-700 group-hover:text-primary transition-colors">{formConstants.ingredient}</span>
+          <span className="text-sm font-medium text-gray-700">{formConstants.ingredient}</span>
         </label>
-        <label className="flex items-center gap-2 cursor-pointer group">
+        <label className="flex items-center gap-2 cursor-not-allowed group">
           <input
             type="radio"
             value="packaging"
             {...register('inputType')}
-            onChange={() => {
-              setValue('inputType', 'packaging');
-              setValue('measurementUnit', 'un'); // enforce un
-            }}
-            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 accent-primary"
+            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 accent-primary pointer-events-none"
+            tabIndex={-1}
+            disabled={true}
+
           />
-          <span className="text-sm font-medium text-gray-700 group-hover:text-primary transition-colors">{formConstants.packaging}</span>
+          <span className="text-sm font-medium text-gray-700">{formConstants.packaging}</span>
         </label>
       </fieldset>
 
@@ -115,7 +112,8 @@ export function CreateInputForm({
             />
             <select
               {...register('measurementUnit')}
-              className="border-l border-gray-200 bg-gray-100 py-3 px-3 outline-none text-gray-700 text-sm font-medium cursor-pointer h-full border-y-0"
+              className="border-l border-gray-200 bg-gray-100 py-3 px-3 outline-none text-gray-700 text-sm font-medium cursor-not-allowed pointer-events-none h-full border-y-0 opacity-80"
+              tabIndex={-1}
             >
               {inputType === 'ingredient' ? (
                 <>

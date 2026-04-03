@@ -1,6 +1,7 @@
 import { Modal } from './modal';
 import { CreateInputForm } from './create-input-form';
 import { useCreateInput } from '../hooks/use-create-input';
+import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
 
 interface CreateInputModalProps {
   isOpen: boolean;
@@ -20,7 +21,7 @@ export function CreateInputModal({ isOpen, onClose, onSuccess }: CreateInputModa
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Cadastrar Insumo">
+    <Modal isOpen={isOpen} onClose={handleClose} title={INPUTS_CONSTANTS.form.modalTitle}>
       <CreateInputForm
         form={form}
         isLoading={isLoading}

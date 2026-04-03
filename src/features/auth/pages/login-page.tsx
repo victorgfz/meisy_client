@@ -37,7 +37,7 @@ export function LoginPage() {
           <LoginForm
             form={form}
             isLoading={isLoading}
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }}
             showPassword={showPassword}
             onTogglePasswordVisibility={handleTogglePasswordVisibility}
             serverErrors={serverErrors}

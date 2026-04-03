@@ -26,9 +26,13 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      tokenStorage.removeToken();
-      // Redirect to login using window.location to quickly clear application state
-      window.location.href = '/auth/login';
+      // Do not trigger global logout if the 401 came from the login endpoint itself
+      const originalRequest = error.config;
+      if (originalRequest && originalRequest.url && !originalRequest.url.includes('/auth/login')) {
+        tokenStorage.removeToken();
+        // Redirect to login using window.location to quickly clear application state
+        window.location.href = '/auth/login';
+      }
     }
     return Promise.reject(error);
   }

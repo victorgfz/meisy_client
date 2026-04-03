@@ -4,14 +4,46 @@ import { useInputs } from '../hooks/use-inputs';
 import { InputList } from '../components/input-list';
 import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { CreateInputModal } from '../components/create-input-modal';
+import { EditInputModal } from '../components/edit-input-modal';
+import { DeleteInputModal } from '../components/delete-input-modal';
+import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
+import { SuccessMessage } from '../components/success-message';
 
 export function InputsPage() {
-  const { inputs, ingredients, packages, isLoading, handleEdit, handleDelete, handleCreate, isCreateModalOpen, setIsCreateModalOpen, fetchInputs } = useInputs();
+  const { 
+    ingredients, packages, isLoading, handleEdit, handleDelete, handleCreate, 
+    isCreateModalOpen, setIsCreateModalOpen, fetchInputs,
+    isEditModalOpen, setIsEditModalOpen, itemToEdit,
+    isDeleteModalOpen, setIsDeleteModalOpen, itemToDelete
+  } = useInputs();
   const { setAction } = useDashboardAction();
 
   const [activeTab, setActiveTab] = useState<'ingredient' | 'package'>('ingredient');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const handleSuccessCreate = () => {
+    fetchInputs();
+    setSuccessMessage(INPUTS_CONSTANTS.messages.successAdd);
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 4000);
+  };
 
+  const handleSuccessEdit = () => {
+    fetchInputs();
+    setSuccessMessage(INPUTS_CONSTANTS.messages.successEdit);
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 4000);
+  };
+  
+  const handleSuccessDelete = () => {
+    fetchInputs();
+    setSuccessMessage(INPUTS_CONSTANTS.messages.successDelete);
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 4000);
+  };
   useEffect(() => {
     setAction({
       label: 'Cadastrar insumo',
@@ -46,6 +78,8 @@ export function InputsPage() {
         </button>
       </div>
 
+      {successMessage && <SuccessMessage message={successMessage} />}
+
       <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
         {activeTab === 'ingredient' && (
           <InputList
@@ -69,7 +103,21 @@ export function InputsPage() {
       <CreateInputModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onSuccess={fetchInputs}
+        onSuccess={handleSuccessCreate}
+      />
+
+      <EditInputModal
+        isOpen={isEditModalOpen}
+        item={itemToEdit}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={handleSuccessEdit}
+      />
+
+      <DeleteInputModal
+        isOpen={isDeleteModalOpen}
+        item={itemToDelete}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onSuccess={handleSuccessDelete}
       />
     </div>
   );

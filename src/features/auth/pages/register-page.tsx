@@ -52,7 +52,7 @@ export function RegisterPage() {
             isLoading={isLoading}
             showPassword={showPassword}
             onTogglePasswordVisibility={handleTogglePasswordVisibility}
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }}
             serverErrors={serverErrors}
           />
 

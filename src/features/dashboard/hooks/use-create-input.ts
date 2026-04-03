@@ -4,13 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { inputsService } from '../services/inputs.service';
 import { InputType, MeasurementUnit } from '../types/inputs.types';
+import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
+
+const { validation } = INPUTS_CONSTANTS;
 
 const createInputSchema = z.object({
   inputType: z.enum(['ingredient', 'packaging']),
-  description: z.string().min(2, 'A descrição deve ter pelo menos 2 caracteres'),
-  amount: z.string().min(1, 'A quantidade é obrigatória'),
+  description: z.string().min(2, validation.descriptionMin),
+  amount: z.string().min(1, validation.amountRequired),
   measurementUnit: z.enum(['g', 'kg', 'ml', 'l', 'un']),
-  price: z.string().min(1, 'O preço é obrigatório'),
+  price: z.string().min(1, validation.priceRequired),
 });
 
 export type CreateInputFormValues = z.infer<typeof createInputSchema>;
@@ -52,7 +55,7 @@ export function useCreateInput(onSuccess: () => void): UseCreateInputReturn {
       const amountNumber = parseFloat(values.amount.replace(/\./g, '').replace(',', '.'));
 
       if (isNaN(priceNumber) || isNaN(amountNumber)) {
-        throw new Error('Valores numéricos inválidos');
+        throw new Error(validation.numericInvalid);
       }
 
       await inputsService.create({
@@ -61,13 +64,14 @@ export function useCreateInput(onSuccess: () => void): UseCreateInputReturn {
         type: values.inputType === 'ingredient' ? InputType.ingredient : InputType.packaging,
         amount: amountNumber,
         measurementUnit: MeasurementUnit[values.measurementUnit === 'un' ? 'unit' : values.measurementUnit as keyof typeof MeasurementUnit],
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       resetForm();
       onSuccess();
     } catch (error: any) {
-      console.error('Create input error:', error?.response?.data?.errorMessages || error.message);
-      const messages = error?.response?.data?.errorMessages ?? [error.message || 'Ocorreu um erro ao cadastrar. Tente novamente.'];
+      const messages = error?.response?.data?.errorMessages ?? ['Ocorreu um erro ao cadastrar. Tente novamente.'];
       setServerErrors(messages);
     } finally {
       setIsLoading(false);

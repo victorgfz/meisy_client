@@ -27,7 +27,6 @@ export function InputCard({ item, onEdit, onDelete }: InputCardProps) {
     return formatDistanceToNow(new Date(date), { locale: ptBR, addSuffix: true });
   };
 
-  console.log(new Date())
 
   return (
     <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm transition-shadow hover:shadow-md w-full flex flex-col">
