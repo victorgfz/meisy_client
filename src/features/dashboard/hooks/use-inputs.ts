@@ -18,7 +18,9 @@ export function useInputs() {
       const response = await inputsService.getAll();
       setInputs(response);
     } catch (error) {
+      console.log("error");
 
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -28,8 +30,8 @@ export function useInputs() {
     fetchInputs();
   }, [fetchInputs]);
 
-  const ingredients = useMemo(() => inputs.filter(i => i.type === Number(0)), [inputs]);
-  const packages = useMemo(() => inputs.filter(i => i.type === Number(1)), [inputs]);
+  const ingredients = useMemo(() => inputs.length > 0 ? inputs.filter(i => i.type === Number(0)) : [], [inputs]);
+  const packages = useMemo(() => inputs.length > 0 ? inputs.filter(i => i.type === Number(1)) : [], [inputs]);
 
   const handleEdit = useCallback((id: number) => {
     const item = inputs.find(i => i.id === id);

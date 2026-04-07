@@ -7,18 +7,32 @@ import { CreateInputModal } from '../components/create-input-modal';
 import { EditInputModal } from '../components/edit-input-modal';
 import { DeleteInputModal } from '../components/delete-input-modal';
 import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
+import { OVERHEADS_CONSTANTS } from '../constants/overheads.constants';
 import { SuccessMessage } from '../components/success-message';
+import { OverheadList } from '../components/overhead-list';
+import { OverheadModal } from '../components/overhead-modal';
+import { useOverheads } from '../hooks/use-overheads';
 
 export function InputsPage() {
-  const { 
-    ingredients, packages, isLoading, handleEdit, handleDelete, handleCreate, 
+  const {
+    ingredients, packages, isLoading, handleEdit, handleDelete, handleCreate,
     isCreateModalOpen, setIsCreateModalOpen, fetchInputs,
     isEditModalOpen, setIsEditModalOpen, itemToEdit,
     isDeleteModalOpen, setIsDeleteModalOpen, itemToDelete
   } = useInputs();
+  const {
+    overheads,
+    isLoading: isLoadingOverheads,
+    isModalOpen: isOverheadModalOpen,
+    selectedType: selectedOverheadType,
+    selectedOverhead,
+    handleOpenModal: handleOpenOverheadModal,
+    handleCloseModal: handleCloseOverheadModal,
+    fetchOverheads
+  } = useOverheads();
   const { setAction } = useDashboardAction();
 
-  const [activeTab, setActiveTab] = useState<'ingredient' | 'package'>('ingredient');
+  const [activeTab, setActiveTab] = useState<'ingredient' | 'package' | 'overhead'>('ingredient');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSuccessCreate = () => {
@@ -36,7 +50,7 @@ export function InputsPage() {
       setSuccessMessage(null);
     }, 4000);
   };
-  
+
   const handleSuccessDelete = () => {
     fetchInputs();
     setSuccessMessage(INPUTS_CONSTANTS.messages.successDelete);
@@ -51,7 +65,6 @@ export function InputsPage() {
       onClick: handleCreate,
     });
 
-
     return () => setAction(null);
   }, [setAction, handleCreate]);
 
@@ -60,7 +73,7 @@ export function InputsPage() {
       <div className="flex justify-center w-full border-b border-gray-300 mb-4 sticky top-0 bg-bg-body z-20 pt-4 bg-bg-body">
         <button
           onClick={() => setActiveTab('ingredient')}
-          className={`flex-1 md:flex-none pb-3 px-6 font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === 'ingredient'
+          className={`flex-1 md:flex-none pb-3 px-6 font-medium text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'ingredient'
             ? 'border-primary text-primary'
             : 'border-transparent text-text-secondary hover:text-text-primary hover:border-gray-200'
             }`}
@@ -69,12 +82,21 @@ export function InputsPage() {
         </button>
         <button
           onClick={() => setActiveTab('package')}
-          className={`flex-1 md:flex-none pb-3 px-6 font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === 'package'
+          className={`flex-1 md:flex-none pb-3 px-6 font-medium text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'package'
             ? 'border-primary text-primary'
             : 'border-transparent text-text-secondary hover:text-text-primary hover:border-gray-200'
             }`}
         >
           Embalagens
+        </button>
+        <button
+          onClick={() => setActiveTab('overhead')}
+          className={`flex-1 md:flex-none pb-3 px-6 font-medium text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'overhead'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-text-secondary hover:text-text-primary hover:border-gray-200'
+            }`}
+        >
+          Custos Indiretos
         </button>
       </div>
 
@@ -98,6 +120,14 @@ export function InputsPage() {
             onDelete={handleDelete}
           />
         )}
+
+        {activeTab === 'overhead' && (
+          <OverheadList
+            overheads={overheads}
+            isLoading={isLoadingOverheads}
+            onOpenModal={handleOpenOverheadModal}
+          />
+        )}
       </section>
 
       <CreateInputModal
@@ -118,6 +148,18 @@ export function InputsPage() {
         item={itemToDelete}
         onClose={() => setIsDeleteModalOpen(false)}
         onSuccess={handleSuccessDelete}
+      />
+
+      <OverheadModal
+        isOpen={isOverheadModalOpen}
+        onClose={handleCloseOverheadModal}
+        onSuccess={() => {
+          fetchOverheads();
+          setSuccessMessage(OVERHEADS_CONSTANTS.messages.successSave);
+          setTimeout(() => setSuccessMessage(null), 4000);
+        }}
+        type={selectedOverheadType}
+        overhead={selectedOverhead}
       />
     </div>
   );
