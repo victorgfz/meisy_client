@@ -2,7 +2,7 @@ export const INPUTS_CONSTANTS = {
   actions: {
     edit: 'Editar',
     delete: 'Excluir',
-    create: 'Cadastrar Ingrediente',
+    create: 'Cadastrar Insumo',
   },
   list: {
     empty: 'Nenhum item cadastrado',

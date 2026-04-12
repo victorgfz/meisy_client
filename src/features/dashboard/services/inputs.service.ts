@@ -1,5 +1,5 @@
 import { apiClient } from '../../../lib/api-client';
-
+import type { RequestRegisterInputJson, RequestUpdateInputJson } from '../types/inputs.types';
 
 
 export const inputsService = {
@@ -7,11 +7,11 @@ export const inputsService = {
         const response = await apiClient.get('/inputs');
         return response.data;
     },
-    create: async (data: { description: string, price: number, type: number, amount: number, measurementUnit: number, createdAt: Date, updatedAt: Date }) => {
+    create: async (data: RequestRegisterInputJson) => {
         const response = await apiClient.post('/inputs', data);
         return response.data;
     },
-    update: async (id: number, data: { description: string, price: number, amount: number, updatedAt: Date }) => {
+    update: async (id: number, data: RequestUpdateInputJson) => {
         await apiClient.put(`/inputs/${id}`, data);
     },
     delete: async (id: number) => {

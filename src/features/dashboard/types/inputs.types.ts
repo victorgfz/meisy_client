@@ -11,6 +11,25 @@ export interface Input {
   companyId: number;
 }
 
+export interface RequestRegisterInputJson {
+  description: string;
+  price: number;
+  type: number;
+  amount: number;
+  measurementUnit: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RequestUpdateInputJson {
+  description: string;
+  price: number;
+  amount: number;
+  updatedAt: Date;
+}
+
+
+
 export const InputType = {
   ingredient: 0,
   packaging: 1,

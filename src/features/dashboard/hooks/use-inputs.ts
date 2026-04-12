@@ -18,7 +18,6 @@ export function useInputs() {
       const response = await inputsService.getAll();
       setInputs(response);
     } catch (error) {
-      console.log("error");
 
       console.error(error);
     } finally {

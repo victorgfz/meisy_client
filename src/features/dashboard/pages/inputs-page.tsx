@@ -60,7 +60,7 @@ export function InputsPage() {
   };
   useEffect(() => {
     setAction({
-      label: 'Cadastrar insumo',
+      label: INPUTS_CONSTANTS.actions.create,
       icon: <Plus className="w-5 h-5" strokeWidth={3} />,
       onClick: handleCreate,
     });

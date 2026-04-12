@@ -15,7 +15,6 @@ export function useOverheads() {
       const response = await overheadsService.getAll();
       setOverheads(Array.isArray(response) ? response : []);
     } catch (error) {
-      console.error('Failed to fetch overheads', error);
       setOverheads([]);
     } finally {
       setIsLoading(false);

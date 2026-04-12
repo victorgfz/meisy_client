@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/routing/protected-route';
 import { PublicRoute } from './components/routing/public-route';
 import { DashboardLayout } from './features/dashboard/components/dashboard-layout';
 import { DashboardActionProvider } from './features/dashboard/contexts/dashboard-action.context';
+import { ProductsPage } from './features/dashboard/pages/products-page';
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
           {
             path: 'inputs',
             element: <InputsPage />,
+          },
+          {
+            path: 'products',
+            element: <ProductsPage />,
           },
         ]
       }
