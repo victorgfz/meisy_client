@@ -7,12 +7,13 @@ import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { SuccessMessage } from '../components/success-message';
 import { CreateProductModal } from '../components/create-product-modal';
 import { ProductDetailsModal } from '../components/product-details-modal';
+import { EditProductModal } from '../components/edit-product-modal';
 
 export function ProductsPage() {
   const {
-    products, isLoading, handleEdit, handleDelete, handleCreate, handleViewDetail, 
+    products, isLoading, handleEdit, handleDelete, handleCreate, handleViewDetail,
     fetchProducts, isCreateModalOpen, setIsCreateModalOpen,
-    isDetailModalOpen, setIsDetailModalOpen, selectedProductId
+    isDetailModalOpen, setIsDetailModalOpen, selectedProductId, isEditModalOpen, setIsEditModalOpen, itemToEdit
   } = useProducts();
 
   const { setAction } = useDashboardAction();
@@ -68,26 +69,27 @@ export function ProductsPage() {
         TODO: Implement the EditProductModal and DeleteProductModal 
         to complete the full CRUD flow, following the same pattern as Inputs.
       */}
-      
+
       <CreateProductModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={handleSuccessCreate}
       />
-      
+
       <ProductDetailsModal
         isOpen={isDetailModalOpen}
         productId={selectedProductId}
         onClose={() => setIsDetailModalOpen(false)}
       />
-      
-      {/* 
+
       <EditProductModal
         isOpen={isEditModalOpen}
-        item={itemToEdit}
+        productId={itemToEdit?.id || null}
         onClose={() => setIsEditModalOpen(false)}
         onSuccess={handleSuccessEdit}
       />
+
+      {/* 
       <DeleteProductModal
         isOpen={isDeleteModalOpen}
         item={itemToDelete}

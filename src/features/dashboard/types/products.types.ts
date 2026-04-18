@@ -70,3 +70,14 @@ export interface ProductDetail {
   productInputs: ProductDetailInput[];
   productOverheads: ProductOverhead[];
 }
+
+
+export interface EditProductFormValues {
+  description: string;
+  price: number;
+  amount: number;
+  productionTime: string;
+  servings: number;
+  updatedAt: Date;
+  productInputs: { inputId: number, productionAmount: number, productionMeasurementUnit: number }[];
+}

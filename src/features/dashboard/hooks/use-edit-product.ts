@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { productsService } from '../services/products.service';
 import { MeasurementUnit } from '../types/inputs.types';
-import { ProductionMeasurementUnit } from '../types/products.types';
+import { ProductionMeasurementUnit, type ProductDetail } from '../types/products.types';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 
 const { validation } = PRODUCTS_CONSTANTS;
 
-const createProductSchema = z.object({
+const editProductSchema = z.object({
   description: z.string().min(2, validation.descriptionMin),
   amount: z.string().min(1, validation.amountRequired),
   measurementUnit: z.enum(['g', 'kg', 'ml', 'l', 'un']),
@@ -23,22 +23,37 @@ const createProductSchema = z.object({
   })).optional()
 });
 
-export type CreateProductFormValues = z.infer<typeof createProductSchema>;
+export type EditProductFormValues = z.infer<typeof editProductSchema>;
 
-interface UseCreateProductReturn {
-  form: UseFormReturn<CreateProductFormValues>;
+interface UseEditProductReturn {
+  form: UseFormReturn<EditProductFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
-  onSubmit: (values: CreateProductFormValues) => void;
+  onSubmit: (values: EditProductFormValues) => void;
   resetForm: () => void;
 }
 
-export function useCreateProduct(onSuccess: () => void): UseCreateProductReturn {
+const getUnitKey = (value: number) => {
+  const key = Object.keys(MeasurementUnit).find(key => MeasurementUnit[key as keyof typeof MeasurementUnit] === value);
+  if (key === 'unit') return 'un';
+  return key || 'g';
+};
+
+const getProductionUnitKey = (value: number) => {
+  const key = Object.keys(ProductionMeasurementUnit).find(key => ProductionMeasurementUnit[key as keyof typeof ProductionMeasurementUnit] === value);
+  if (key === 'unit') return 'un';
+  return key || 'g';
+};
+
+export function useEditProduct(
+  initialData: ProductDetail | null,
+  onSuccess: () => void
+): UseEditProductReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<string[] | null>(null);
 
-  const form = useForm<CreateProductFormValues>({
-    resolver: zodResolver(createProductSchema),
+  const form = useForm<EditProductFormValues>({
+    resolver: zodResolver(editProductSchema),
     defaultValues: {
       description: '',
       amount: '',
@@ -50,12 +65,72 @@ export function useCreateProduct(onSuccess: () => void): UseCreateProductReturn 
     },
   });
 
+  useEffect(() => {
+    if (initialData) {
+      const unit = getUnitKey(initialData.measurementUnit);
+      const formattedPrice = initialData.price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const formattedAmount = initialData.amount.toString().replace('.', ',');
+
+      const productInputsValue: Record<string, { isChecked: boolean, amount?: string, unit: any }> = {};
+
+      if (initialData.productInputs) {
+        initialData.productInputs.forEach(input => {
+          productInputsValue[input.id.toString()] = {
+            isChecked: true,
+            amount: input.productionAmount.toString().replace('.', ','),
+            unit: getProductionUnitKey(input.productionMeasurementUnit) as any
+          };
+        });
+      }
+
+      form.reset({
+        description: initialData.description,
+        amount: formattedAmount,
+        measurementUnit: unit as any,
+        price: formattedPrice,
+        productionTime: initialData.productionTime,
+        servings: initialData.servings.toString(),
+        productInputs: productInputsValue
+      });
+    }
+  }, [initialData, form]);
+
   const resetForm = () => {
-    form.reset();
+    if (initialData) {
+      const unit = getUnitKey(initialData.measurementUnit);
+      const formattedPrice = initialData.price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const formattedAmount = initialData.amount.toString().replace('.', ',');
+
+      const productInputsValue: Record<string, { isChecked: boolean, amount?: string, unit: any }> = {};
+
+      if (initialData.productInputs) {
+        initialData.productInputs.forEach(input => {
+          productInputsValue[input.id.toString()] = {
+            isChecked: true,
+            amount: input.productionAmount.toString().replace('.', ','),
+            unit: getProductionUnitKey(input.productionMeasurementUnit) as any
+          };
+        });
+      }
+
+      form.reset({
+        description: initialData.description,
+        amount: formattedAmount,
+        measurementUnit: unit as any,
+        price: formattedPrice,
+        productionTime: initialData.productionTime,
+        servings: initialData.servings.toString(),
+        productInputs: productInputsValue
+      });
+    } else {
+      form.reset();
+    }
     setServerErrors(null);
   };
 
-  const onSubmit = async (values: CreateProductFormValues) => {
+  const onSubmit = async (values: EditProductFormValues) => {
+    if (!initialData) return;
+
     setIsLoading(true);
     setServerErrors(null);
 
@@ -91,23 +166,16 @@ export function useCreateProduct(onSuccess: () => void): UseCreateProductReturn 
         });
       }
 
-      const mUnitKey = values.measurementUnit === 'un' ? 'unit' : values.measurementUnit as keyof typeof MeasurementUnit;
-
-
-
-      await productsService.create({
+      await productsService.update(initialData.id, {
         description: values.description,
         price: priceNumber,
         amount: amountNumber,
-        measurementUnit: MeasurementUnit[mUnitKey],
         productionTime: values.productionTime,
         servings: servingsNumber,
         productInputs: apiInputs,
-        createdAt: new Date(),
         updatedAt: new Date(),
       });
 
-      resetForm();
       onSuccess();
     } catch (error: any) {
       if (error instanceof Error) {
