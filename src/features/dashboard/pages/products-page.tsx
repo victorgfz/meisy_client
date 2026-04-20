@@ -8,12 +8,14 @@ import { SuccessMessage } from '../components/success-message';
 import { CreateProductModal } from '../components/create-product-modal';
 import { ProductDetailsModal } from '../components/product-details-modal';
 import { EditProductModal } from '../components/edit-product-modal';
+import { DeleteProductModal } from '../components/delete-product-modal';
 
 export function ProductsPage() {
   const {
     products, isLoading, handleEdit, handleDelete, handleCreate, handleViewDetail,
     fetchProducts, isCreateModalOpen, setIsCreateModalOpen,
-    isDetailModalOpen, setIsDetailModalOpen, selectedProductId, isEditModalOpen, setIsEditModalOpen, itemToEdit
+    isDetailModalOpen, setIsDetailModalOpen, selectedProductId, isEditModalOpen, setIsEditModalOpen, itemToEdit,
+    isDeleteModalOpen, setIsDeleteModalOpen, itemToDelete
   } = useProducts();
 
   const { setAction } = useDashboardAction();
@@ -65,10 +67,7 @@ export function ProductsPage() {
         />
       </section>
 
-      {/* 
-        TODO: Implement the EditProductModal and DeleteProductModal 
-        to complete the full CRUD flow, following the same pattern as Inputs.
-      */}
+
 
       <CreateProductModal
         isOpen={isCreateModalOpen}
@@ -89,14 +88,12 @@ export function ProductsPage() {
         onSuccess={handleSuccessEdit}
       />
 
-      {/* 
       <DeleteProductModal
         isOpen={isDeleteModalOpen}
         item={itemToDelete}
         onClose={() => setIsDeleteModalOpen(false)}
         onSuccess={handleSuccessDelete}
       /> 
-      */}
     </div>
   );
 }
