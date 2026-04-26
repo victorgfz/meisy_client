@@ -1,15 +1,15 @@
 import { apiClient } from '../../../lib/api-client';
-import type { Overhead, RequestRegisterOverheadJson, RequestUpdateOverheadJson } from '../types/overheads.types';
+import type { RequestRegisterOverheadJson, RequestUpdateOverheadJson } from '../types/overheads.types';
 
 export const overheadsService = {
-  getAll: async (): Promise<Overhead[]> => {
+  getAll: async () => {
     const response = await apiClient.get('/overheads');
     return response.data;
   },
-  register: async (data: RequestRegisterOverheadJson): Promise<void> => {
+  register: async (data: RequestRegisterOverheadJson) => {
     await apiClient.post('/overheads', data);
   },
-  update: async (id: number, data: RequestUpdateOverheadJson): Promise<void> => {
+  update: async (id: number, data: RequestUpdateOverheadJson) => {
     await apiClient.put(`/overheads/${id}`, data);
   }
 };

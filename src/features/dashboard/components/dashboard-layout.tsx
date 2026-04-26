@@ -20,27 +20,21 @@ export function DashboardLayout() {
 
   return (
     <div className="h-screen overflow-hidden bg-bg-body flex md:pl-64 text-text-primary">
-      {/* Desktop Sidebar Navigation */}
       <DesktopSidebar />
 
-      {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 w-full h-full relative ">
-        {/* Top Header Section with Gradient Background (Sticky & non-shrinking) */}
         <div className="shrink-0 bg-gradient-brand pb-4 rounded-b-[2rem] md:rounded-b-none relative overflow-visible z-40 md:pb-8">
-          {/* Subtle background blob */}
           <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none opacity-50 z-0">
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
           </div>
 
           <DashboardHeader userName={user?.name ?? 'Usuário'} companyCode={user?.companyCode ?? 'XXXXXX'} />
 
-          {/* Wrapper for Summary and Action Button */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between px-6 max-w-4xl mx-auto md:max-w-none lg:ml-0 lg:pr-10 gap-4">
             <div className="flex-1">
               <DashboardSummary metrics={mockMetrics} />
             </div>
 
-            {/* Dynamic Action Button embedded in Layout */}
             {action && (
               <div className="shrink-0 w-full lg:w-auto mt-2 md:mt-0 relative z-10 pb-6 md:pb-6 text-white">
                 <button
@@ -55,14 +49,12 @@ export function DashboardLayout() {
           </div>
         </div>
 
-        {/* Dynamic scrollable Page Content */}
-        {/* Added bottom padding on mobile for BottomNav space */}
-        <div className="flex-1 w-full relative overflow-y-auto px-4 md:p-8 pb-24 md:pb-8 max-w-5xl mx-auto z-10 rounded-t-3xl md:rounded-none">
+
+
+        <div className="flex-1 w-full relative overflow-y-auto px-4 pb-24 md:pb-8 max-w-5xl mx-auto z-10">
           <Outlet />
         </div>
       </main>
-
-      {/* Mobile Bottom Navigation */}
       <BottomNav />
     </div>
   );

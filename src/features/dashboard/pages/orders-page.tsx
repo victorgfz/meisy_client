@@ -5,15 +5,42 @@ import { OrderList } from '../components/order-list';
 import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
 import { OrderStatus } from '../types/orders.types';
+import { CreateOrderModal } from '../components/create-order-modal';
+import { CancelOrderModal } from '../components/cancel-order-modal';
+import { SuccessMessage } from '../components/success-message';
+import { useAdvanceOrder } from '../hooks/use-advance-order';
 
 export function OrdersPage() {
   const {
-    pendingOrders, preparingOrders, readyOrders, completedOrders, isLoading, handleCreate
+    pendingOrders, preparingOrders, readyOrders, completedOrders, isLoading, handleCreate,
+    isCreateModalOpen, setIsCreateModalOpen, fetchOrders,
+    isCancelModalOpen, setIsCancelModalOpen, itemToCancel, handleCancel
   } = useOrders();
 
   const { setAction } = useDashboardAction();
 
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const handleSuccessCreate = () => {
+    fetchOrders();
+    setSuccessMessage(ORDERS_CONSTANTS.messages.successAdd);
+    setTimeout(() => setSuccessMessage(null), 4000);
+  };
+
+  const handleSuccessAdvance = () => {
+    fetchOrders();
+    setSuccessMessage(ORDERS_CONSTANTS.messages.successAdvance);
+    setTimeout(() => setSuccessMessage(null), 4000);
+  };
+
+  const handleSuccessCancel = () => {
+    fetchOrders();
+    setSuccessMessage(ORDERS_CONSTANTS.messages.successCancel);
+    setTimeout(() => setSuccessMessage(null), 4000);
+  };
+
+  const { handleAdvance } = useAdvanceOrder(handleSuccessAdvance);
 
   useEffect(() => {
     setAction({
@@ -46,7 +73,9 @@ export function OrdersPage() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto relative px-4 sm:px-0">
-      <div className="flex justify-start overflow-x-auto w-full border-b border-gray-300 mb-6 sticky top-0 bg-[#FAFAFA] z-20 pt-4 scrollbar-hide">
+
+
+      <div className="flex justify-start md:justify-center overflow-x-auto w-full border-b border-gray-300 mb-6 sticky top-0 z-20 pt-8 scrollbar-hide bg-bg-body">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -57,17 +86,32 @@ export function OrdersPage() {
               }`}
           >
             {tab.label}
-            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${activeTab === tab.id ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600'
-              }`}>
-              {tab.count}
-            </span>
           </button>
         ))}
       </div>
+      {successMessage && <SuccessMessage message={successMessage} />}
 
       <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-        <OrderList orders={getActiveList()} isLoading={isLoading} />
+        <OrderList 
+          orders={getActiveList()} 
+          isLoading={isLoading} 
+          onAdvance={(order) => handleAdvance(order.id)}
+          onCancel={handleCancel}
+        />
       </section>
+
+      <CreateOrderModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleSuccessCreate}
+      />
+
+      <CancelOrderModal
+        isOpen={isCancelModalOpen}
+        item={itemToCancel}
+        onClose={() => setIsCancelModalOpen(false)}
+        onSuccess={handleSuccessCancel}
+      />
     </div>
   );
 }

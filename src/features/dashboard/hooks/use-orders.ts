@@ -6,6 +6,10 @@ export function useOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [itemToCancel, setItemToCancel] = useState<Order | null>(null);
+
   const fetchOrders = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -29,15 +33,13 @@ export function useOrders() {
   const completedOrders = useMemo(() => orders.length > 0 ? orders.filter(o => o.status === Number(3)) : [], [orders]);
 
 
-
-  console.log(pendingOrders)
-  console.log(preparingOrders)
-  console.log(readyOrders)
-  console.log(completedOrders)
-
   const handleCreate = useCallback(() => {
-    // Placeholder to be implemented later as requested
-    console.log('Implement handleCreate logic for orders later');
+    setIsCreateModalOpen(true);
+  }, []);
+
+  const handleCancel = useCallback((order: Order) => {
+    setItemToCancel(order);
+    setIsCancelModalOpen(true);
   }, []);
 
   return {
@@ -47,7 +49,13 @@ export function useOrders() {
     readyOrders,
     completedOrders,
     isLoading,
+    isCreateModalOpen,
+    setIsCreateModalOpen,
+    isCancelModalOpen,
+    setIsCancelModalOpen,
+    itemToCancel,
     fetchOrders,
     handleCreate,
+    handleCancel,
   };
 }

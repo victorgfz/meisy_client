@@ -70,7 +70,7 @@ export function InputsPage() {
 
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto relative">
-      <div className="flex justify-center w-full border-b border-gray-300 mb-4 sticky top-0 bg-bg-body z-20 pt-4 bg-bg-body">
+      <div className="flex justify-center w-full border-b border-gray-300 mb-4 sticky top-0 bg-bg-body z-20 pt-8 bg-bg-body">
         <button
           onClick={() => setActiveTab('ingredient')}
           className={`flex-1 md:flex-none pb-3 px-6 font-medium text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'ingredient'

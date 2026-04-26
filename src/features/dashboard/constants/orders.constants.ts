@@ -1,8 +1,8 @@
 export const ORDERS_CONSTANTS = {
   actions: {
     create: 'Novo Pedido',
-    cancel: 'Cancelar Pedido',
-    advanceStatus: 'Avançar Status',
+    cancel: 'Cancelar',
+    advanceStatus: 'Avançar',
   },
   tabs: {
     pending: 'Pendente',
@@ -15,11 +15,12 @@ export const ORDERS_CONSTANTS = {
   },
   card: {
     orderId: 'Pedido',
-    deliveryDate: 'Entrega:',
     status: 'Status:',
     totalPrice: 'Total:',
     seller: 'Vendedor(a):',
     client: 'Cliente:',
+    orderDate: 'Data do pedido:',
+    deliveryDate: 'Data de entrega:',
     productsTitle: 'Produtos do Pedido',
     hideProducts: 'Ocultar Produtos',
     showProducts: 'Exibir Produtos',
@@ -31,5 +32,36 @@ export const ORDERS_CONSTANTS = {
     2: 'Pronto',
     3: 'Concluído',
     4: 'Cancelado',
-  } as Record<number, string>
+  } as Record<number, string>,
+  modal: {
+    createTitle: 'Adicionar Pedido',
+  },
+  form: {
+    deliveryDateLabel: 'Data de Entrega',
+    deliveryDatePlaceholder: 'Selecione a data e hora',
+    productsSubtitle: 'Produtos do Pedido',
+    amountInputPlaceholder: 'Qtd.',
+    saveButton: 'Salvar Pedido',
+    savingButton: 'Salvando...',
+    cancelButton: 'Cancelar',
+    totalLabel: 'Valor Total',
+    cancelModalTitle: 'Cancelar Pedido',
+    cancelConfirmation: 'Tem certeza que deseja cancelar o pedido #{id}? Esta ação não pode ser desfeita.',
+    cancelConfirmButton: 'Sim, Cancelar',
+    cancelingButton: 'Cancelando...',
+    keepButton: 'Não, Manter',
+  },
+  validation: {
+    deliveryDateRequired: 'A data de entrega é obrigatória.',
+    deliveryDatePast: 'A data de entrega não pode estar no passado.',
+    hasProducts: 'Adicione pelo menos um produto ao pedido.',
+    productAmountRequired: 'Informe a quantidade para os produtos selecionados.',
+    numericInvalid: 'Valores numéricos inválidos.',
+    genericError: 'Ocorreu um erro ao salvar o pedido.',
+  },
+  messages: {
+    successAdd: 'Pedido adicionado com sucesso!',
+    successAdvance: 'Status do pedido avançado com sucesso!',
+    successCancel: 'Pedido cancelado com sucesso!',
+  }
 };

@@ -31,3 +31,14 @@ export interface Order {
   updatedAt: string | Date;
   companyId: number;
 }
+
+export interface CreateOrderRequest {
+  deliveryDate: string | Date;
+  clientId: number | null;
+  orderProducts: {
+    productId: number;
+    amount: number;
+  }[];
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
