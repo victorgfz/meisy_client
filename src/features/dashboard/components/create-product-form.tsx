@@ -48,7 +48,7 @@ export function CreateProductForm({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
-    let value = e.target.value.replace(/[^0-9.,]/g, "").replace(',', '.');
+    let value = e.target.value.replace(/[^0-9.,]/g, "").replace(/\./g, ',');
     setValue(fieldName, value, { shouldValidate: true });
   };
 

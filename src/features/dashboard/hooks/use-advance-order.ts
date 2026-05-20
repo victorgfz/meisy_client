@@ -12,6 +12,7 @@ export function useAdvanceOrder(onSuccess: () => void) {
 
     try {
       await ordersService.advanceStatus(id);
+      window.dispatchEvent(new Event('dashboard-needs-refresh'));
       onSuccess();
     } catch (error: any) {
       const messages = error?.response?.data?.errorMessages ?? [ORDERS_CONSTANTS.validation.genericError];

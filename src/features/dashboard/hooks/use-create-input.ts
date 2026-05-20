@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { inputsService } from '../services/inputs.service';
 import { InputType, MeasurementUnit } from '../types/inputs.types';
 import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = INPUTS_CONSTANTS;
 
@@ -64,8 +65,8 @@ export function useCreateInput(onSuccess: () => void): UseCreateInputReturn {
         type: values.inputType === 'ingredient' ? InputType.ingredient : InputType.packaging,
         amount: amountNumber,
         measurementUnit: MeasurementUnit[values.measurementUnit === 'un' ? 'unit' : values.measurementUnit as keyof typeof MeasurementUnit],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: getDateCorrected(new Date()),
+        updatedAt: getDateCorrected(new Date()),
       });
 
       resetForm();

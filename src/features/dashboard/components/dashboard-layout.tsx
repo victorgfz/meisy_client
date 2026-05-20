@@ -3,21 +3,17 @@ import { DesktopSidebar } from './desktop-sidebar';
 import { BottomNav } from './bottom-nav';
 import { DashboardHeader } from './dashboard-header';
 import { DashboardSummary } from './dashboard-summary';
-import type { SummaryMetrics } from '../types/dashboard.types';
 import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { useAuthContext } from '../../auth/contexts/auth.context';
+import { useInfoDashboard } from '../hooks/use-info-dashboard';
+
 
 export function DashboardLayout() {
   const { action } = useDashboardAction();
   const { user } = useAuthContext();
 
-  const mockMetrics: SummaryMetrics = {
-    balance: 600,
-    balanceChangePercentage: 12,
-    totalOrders: 35,
-    pendingOrders: 8,
-  };
-
+  const { infoDashboard, isLoading } = useInfoDashboard();
+  const loader = true
   return (
     <div className="h-screen overflow-hidden bg-bg-body flex md:pl-64 text-text-primary">
       <DesktopSidebar />
@@ -28,12 +24,32 @@ export function DashboardLayout() {
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
           </div>
 
-          <DashboardHeader userName={user?.name ?? 'Usuário'} companyCode={user?.companyCode ?? 'XXXXXX'} />
+          <DashboardHeader userName={user?.name ?? 'Usuário'} companyCode={user?.companyCode ?? "Não informado"} />
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between px-6 max-w-4xl mx-auto md:max-w-none lg:ml-0 lg:pr-10 gap-4">
-            <div className="flex-1">
-              <DashboardSummary metrics={mockMetrics} />
-            </div>
+            {isLoading ? (
+              <div className="flex-1 w-full">
+                <div className="relative z-10 text-white w-full md:max-w-none">
+                  <div className="h-7 w-48 bg-white/20 rounded-md mx-auto my-4 animate-pulse"></div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white/10 backdrop-blur-md rounded-[1.25rem] p-4 md:p-6 shadow-sm border border-white/10 flex flex-col items-center justify-center animate-pulse">
+                      <div className="h-4 w-20 bg-white/20 rounded-md mb-3"></div>
+                      <div className="h-8 md:h-10 w-24 bg-white/20 rounded-md mb-3"></div>
+                      <div className="h-3 w-32 md:w-40 bg-white/20 rounded-md"></div>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-md rounded-[1.25rem] p-4 md:p-6 shadow-sm border border-white/10 flex flex-col items-center justify-center animate-pulse">
+                      <div className="h-4 w-20 bg-white/20 rounded-md mb-3"></div>
+                      <div className="h-8 md:h-10 w-16 bg-white/20 rounded-md mb-3"></div>
+                      <div className="h-3 w-32 md:w-40 bg-white/20 rounded-md"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex-1">
+                <DashboardSummary metrics={infoDashboard} />
+              </div>
+            )}
 
             {action && (
               <div className="shrink-0 w-full lg:w-auto mt-2 md:mt-0 relative z-10 pb-6 md:pb-6 text-white">

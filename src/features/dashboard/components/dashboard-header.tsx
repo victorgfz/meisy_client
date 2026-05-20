@@ -7,7 +7,7 @@ interface DashboardHeaderProps {
   companyCode?: string;
 }
 
-export function DashboardHeader({ userName = 'Fulano', companyCode = "XXXXXX" }: DashboardHeaderProps) {
+export function DashboardHeader({ userName = 'Usuário', companyCode = "Não informado" }: DashboardHeaderProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
@@ -21,11 +21,11 @@ export function DashboardHeader({ userName = 'Fulano', companyCode = "XXXXXX" }:
           <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
             <UserIcon className="text-primary w-6 h-6" />
           </div>
-          <div className='md:flex md:items-start md:justify-center md:gap-2'>
+          <div className='md:flex md:flex-col md:items-start md:justify-center md:gap-2'>
             <h1 className="text-lg font-normal leading-none">
               {DASHBOARD_CONSTANTS.greeting.replace('{name}', userName)}
             </h1>
-            <p className='text-sm font-light text-white/50'>{companyCode}</p>
+            <p className='text-sm font-light text-white/50'>Código da empresa: <span className='font-bold'>{companyCode}</span> </p>
           </div>
 
         </div>

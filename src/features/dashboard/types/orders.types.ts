@@ -15,7 +15,7 @@ export interface OrderProduct {
 
 export interface Order {
   id: number;
-  deliveryDate: string | Date;
+  deliveryDate: Date;
   status: typeof OrderStatus[keyof typeof OrderStatus];
   totalPrice: number;
   seller: {
@@ -27,18 +27,18 @@ export interface Order {
     name: string;
   } | null;
   orderProducts: OrderProduct[];
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: Date;
+  updatedAt: Date;
   companyId: number;
 }
 
 export interface CreateOrderRequest {
-  deliveryDate: string | Date;
+  deliveryDate: string;
   clientId: number | null;
   orderProducts: {
     productId: number;
     amount: number;
   }[];
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: string;
+  updatedAt: string;
 }

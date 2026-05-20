@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { ordersService } from '../services/orders.service';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = ORDERS_CONSTANTS;
 
@@ -70,15 +71,15 @@ export function useCreateOrder(onSuccess: () => void): UseCreateOrderReturn {
         throw new Error(validation.hasProducts);
       }
 
-      const now = new Date();
       await ordersService.create({
-        deliveryDate: new Date(values.deliveryDate).toISOString(),
+        deliveryDate: getDateCorrected(new Date(values.deliveryDate)),
         clientId: null,
         orderProducts: products,
-        createdAt: now.toISOString(),
-        updatedAt: now.toISOString(),
+        createdAt: getDateCorrected(new Date()),
+        updatedAt: getDateCorrected(new Date()),
       });
 
+      window.dispatchEvent(new Event('dashboard-needs-refresh'));
       resetForm();
       onSuccess();
     } catch (error: any) {

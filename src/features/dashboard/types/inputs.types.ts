@@ -11,21 +11,21 @@ export interface Input {
   companyId: number;
 }
 
-export interface RequestRegisterInputJson {
+export interface CreateInputRequest {
   description: string;
   price: number;
   type: number;
   amount: number;
   measurementUnit: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface RequestUpdateInputJson {
+export interface UpdateInputRequest {
   description: string;
   price: number;
   amount: number;
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 

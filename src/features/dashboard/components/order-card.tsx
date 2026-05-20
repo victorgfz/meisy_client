@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { type Order, OrderStatus } from '../types/orders.types';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
-import { ChevronDown, ChevronUp, User, UserCircle, ArrowRight, Ban, ShoppingCart, CalendarArrowDown, CalendarDays } from 'lucide-react';
-import { formatRelative } from 'date-fns';
+import { ChevronDown, ChevronUp, User, UserCircle, ArrowRight, Ban, ShoppingCart, CalendarArrowDown, CalendarDays, Check } from 'lucide-react';
+import { formatDistanceToNow, formatRelative, formatDistanceStrict } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+
 
 
 interface OrderCardProps {
@@ -16,17 +17,19 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
+
   const formatDate = (date: string | Date) => new Date(date).toLocaleDateString('pt-BR');
+  const formatDateToNow = (date: Date | string) => {
+    return formatDistanceToNow(new Date(date), { locale: ptBR, addSuffix: true });
+  };
   const formatPrice = (price: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
   const formatDateRelative = (date: string | Date) => {
-    const data = new Date(date);
-    const hoje = new Date();
+    const deliveryDate = new Date(date);
+    const today = new Date();
+    if (order.status !== 3 && deliveryDate < today) return `Entrega atrasada ${formatDistanceStrict(deliveryDate, today, { locale: ptBR })}`
+    if (order.status === 3) return `Entregue ${formatRelative(order.updatedAt, today, { locale: ptBR })}`;
 
-    if (data < hoje) {
-      return `Entregue em ${formatRelative(data, hoje, { locale: ptBR })}`;
-    }
-
-    return `Entrega para ${formatRelative(data, hoje, { locale: ptBR })}`;
+    return `Entrega para ${formatRelative(deliveryDate, today, { locale: ptBR })}`;
 
   };
 
@@ -40,9 +43,10 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow flex flex-col">
-      <button disabled={isLargeScreen} onClick={() => setIsExpanded(!isExpanded)} className={`mb-4 w-full ${isExpanded || isLargeScreen ? 'mb-0' : ''}`}>
+      <button disabled={isLargeScreen} onClick={() => setIsExpanded(!isExpanded)} className={`w-full ${isExpanded || isLargeScreen ? 'mb-0' : 'mb-2'}`}>
 
         <div className='flex justify-between items-start w-full mb-2'>
           <div className="flex items-center gap-2">
@@ -60,7 +64,7 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
 
 
         <div className='flex items-center justify-between mt-4'>
-          <p className='text-sm text-left text-slate-500'>
+          <p className={`text-sm text-left ${order.status !== OrderStatus.Completed && new Date(order.deliveryDate) < new Date() ? 'text-red-600 bg-red-50 px-2.5 py-1 rounded-md' : 'text-slate-500'}`}>
             {formatDateRelative(order.deliveryDate)}
           </p>
 
@@ -123,10 +127,20 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
       <div className="flex gap-2 pt-2">
         <button
           onClick={(e) => { e.stopPropagation(); onAdvance(); }}
-          className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary hover:bg-primary/50 text-white rounded-2xl text-sm font-medium transition-colors"
+          disabled={order.status == OrderStatus.Completed}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl text-sm font-medium transition-colors ${order.status == OrderStatus.Completed ? "bg-slate-100 text-primary" : "bg-primary hover:bg-primary/50 text-white"}`}
         >
-          <ArrowRight className="w-4 h-4" />
-          {ORDERS_CONSTANTS.actions.advanceStatus}
+          {order.status == OrderStatus.Completed ?
+            <>
+              <Check className="w-4 h-4" />
+              Concluído
+            </>
+            :
+            <>
+              <ArrowRight className="w-4 h-4" />
+              {ORDERS_CONSTANTS.actions.advanceStatus}
+            </>
+          }
         </button>
         {order.status !== OrderStatus.Completed && (
           <button
@@ -137,6 +151,9 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
             {ORDERS_CONSTANTS.actions.cancel}
           </button>
         )}
+      </div>
+      <div className="mt-4">
+        <p className="text-[10px] text-text-secondary">Última atualização {formatDateToNow(order.updatedAt)}</p>
       </div>
     </div>
   );

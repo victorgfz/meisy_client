@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { type Order, OrderStatus } from '../types/orders.types';
+import { type Order } from '../types/orders.types';
 import { ordersService } from '../services/orders.service';
 
 export function useOrders() {
@@ -11,6 +11,7 @@ export function useOrders() {
   const [itemToCancel, setItemToCancel] = useState<Order | null>(null);
 
   const fetchOrders = useCallback(async () => {
+    
     try {
       setIsLoading(true);
       const response = await ordersService.getAll();

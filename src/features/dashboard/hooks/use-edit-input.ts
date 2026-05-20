@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { inputsService } from '../services/inputs.service';
 import { type Input, InputType, MeasurementUnit } from '../types/inputs.types';
 import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = INPUTS_CONSTANTS;
 
@@ -106,7 +107,7 @@ export function useEditInput(
         description: values.description,
         price: priceNumber,
         amount: amountNumber,
-        updatedAt: new Date(),
+        updatedAt: getDateCorrected(new Date()),
       });
 
       onSuccess();

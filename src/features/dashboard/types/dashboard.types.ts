@@ -1,8 +1,8 @@
-export interface SummaryMetrics {
+export interface InfoDashboard {
   balance: number;
-  balanceChangePercentage: number;
-  totalOrders: number;
-  pendingOrders: number;
+  variationRate: number;
+  quantityOfOrders: number;
+  quantityOfCompletedOrders: number;
 }
 
 export interface NavItem {

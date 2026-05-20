@@ -7,7 +7,7 @@ export const ORDERS_CONSTANTS = {
   tabs: {
     pending: 'Pendente',
     preparing: 'Preparando',
-    ready: 'Pronto',
+    ready: 'Pronto para entrega',
     completed: 'Concluído',
   },
   list: {

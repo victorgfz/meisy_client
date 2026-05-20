@@ -30,7 +30,7 @@ export interface Product {
   companyId: number;
 }
 
-export interface CreateProductFormValues {
+export interface CreateProductRequest {
   description: string,
   price: number,
   amount: number,
@@ -38,8 +38,8 @@ export interface CreateProductFormValues {
   productionTime: string,
   servings: number,
   productInputs: { inputId: number, productionAmount: number, productionMeasurementUnit: number }[],
-  createdAt: Date,
-  updatedAt: Date
+  createdAt: string,
+  updatedAt: string
 }
 
 export interface ProductDetailInput {
@@ -72,12 +72,12 @@ export interface ProductDetail {
 }
 
 
-export interface EditProductFormValues {
+export interface UpdateProductRequest {
   description: string;
   price: number;
   amount: number;
   productionTime: string;
   servings: number;
-  updatedAt: Date;
+  updatedAt: string;
   productInputs: { inputId: number, productionAmount: number, productionMeasurementUnit: number }[];
 }

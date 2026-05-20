@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { overheadsService } from '../services/overheads.service';
 import type { Overhead } from '../types/overheads.types';
 import { OVERHEADS_CONSTANTS } from '../constants/overheads.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = OVERHEADS_CONSTANTS;
 
@@ -58,14 +59,14 @@ export function useUpsertOverhead(
       if (overhead) {
         await overheadsService.update(overhead.id, {
           costPerHour: costNumber,
-          updatedAt: new Date(),
+          updatedAt: getDateCorrected(new Date()),
         });
       } else {
         await overheadsService.register({
           type: type as any,
           costPerHour: costNumber,
-          updatedAt: new Date(),
-          createdAt: new Date(),
+          updatedAt: getDateCorrected(new Date()),
+          createdAt: getDateCorrected(new Date()),
         });
       }
 

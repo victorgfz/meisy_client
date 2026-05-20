@@ -4,8 +4,10 @@ export const DASHBOARD_CONSTANTS = {
     title: 'Resumo do mês de {month}',
     balance: 'Balanço',
     orders: 'Pedidos',
-    thisMonthIncrease: '+{percentage}% este mês',
-    pending: '{count} pendentes'
+    thisMonthIncrease: '{percentage}% este mês',
+    firstMonth: "Primeiro mês",
+    completed: '{count} concluídos',
+    error: "Erro ao carregar balanço do mês atual."
   },
   menu: {
     profile: 'Meu Perfil',

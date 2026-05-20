@@ -6,6 +6,7 @@ import { productsService } from '../services/products.service';
 import { MeasurementUnit } from '../types/inputs.types';
 import { ProductionMeasurementUnit, type ProductDetail } from '../types/products.types';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = PRODUCTS_CONSTANTS;
 
@@ -75,9 +76,10 @@ export function useEditProduct(
 
       if (initialData.productInputs) {
         initialData.productInputs.forEach(input => {
+          const recipeAmount = parseFloat((input.productionAmount * initialData.servings).toFixed(4));
           productInputsValue[input.id.toString()] = {
             isChecked: true,
-            amount: input.productionAmount.toString().replace('.', ','),
+            amount: recipeAmount.toString().replace('.', ','),
             unit: getProductionUnitKey(input.productionMeasurementUnit) as any
           };
         });
@@ -105,9 +107,10 @@ export function useEditProduct(
 
       if (initialData.productInputs) {
         initialData.productInputs.forEach(input => {
+          const recipeAmount = parseFloat((input.productionAmount * initialData.servings).toFixed(4));
           productInputsValue[input.id.toString()] = {
             isChecked: true,
-            amount: input.productionAmount.toString().replace('.', ','),
+            amount: recipeAmount.toString().replace('.', ','),
             unit: getProductionUnitKey(input.productionMeasurementUnit) as any
           };
         });
@@ -165,16 +168,16 @@ export function useEditProduct(
           }
         });
       }
-
-      await productsService.update(initialData.id, {
+      const submitData = {
         description: values.description,
         price: priceNumber,
         amount: amountNumber,
         productionTime: values.productionTime,
         servings: servingsNumber,
         productInputs: apiInputs,
-        updatedAt: new Date(),
-      });
+        updatedAt: getDateCorrected(new Date()),
+      }
+      await productsService.update(initialData.id, submitData);
 
       onSuccess();
     } catch (error: any) {

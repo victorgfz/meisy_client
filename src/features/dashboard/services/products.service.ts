@@ -1,5 +1,5 @@
 import { apiClient } from '../../../lib/api-client';
-import type { CreateProductFormValues, EditProductFormValues } from '../types/products.types';
+import type { CreateProductRequest, UpdateProductRequest } from '../types/products.types';
 
 export const productsService = {
     getAll: async () => {
@@ -10,11 +10,11 @@ export const productsService = {
         const response = await apiClient.get(`/products/${id}`);
         return response.data;
     },
-    create: async (data: CreateProductFormValues) => {
+    create: async (data: CreateProductRequest) => {
         const response = await apiClient.post('/products', data);
         return response.data;
     },
-    update: async (id: number, data: EditProductFormValues) => {
+    update: async (id: number, data: UpdateProductRequest) => {
         await apiClient.put(`/products/${id}`, data);
     },
     delete: async (id: number) => {

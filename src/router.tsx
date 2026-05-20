@@ -8,6 +8,7 @@ import { DashboardLayout } from './features/dashboard/components/dashboard-layou
 import { DashboardActionProvider } from './features/dashboard/contexts/dashboard-action.context';
 import { ProductsPage } from './features/dashboard/pages/products-page';
 import { OrdersPage } from './features/dashboard/pages/orders-page';
+import { ReportsPage } from './features/dashboard/pages/reports-page';
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
           {
             path: 'orders',
             element: <OrdersPage />,
+          },
+          {
+            path: 'reports',
+            element: <ReportsPage />,
           },
         ]
       }

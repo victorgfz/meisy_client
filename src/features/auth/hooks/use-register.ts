@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { REGISTER_CONSTANTS } from '../constants/register.constants';
 import { authService } from '../services/auth.service';
 import { useAuthContext } from '../contexts/auth.context';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { nameMessage, emailMessage, passwordMessage, companyCodeMessage } = REGISTER_CONSTANTS.validation;
 
@@ -73,6 +74,8 @@ export function useRegister(): UseRegisterReturn {
         email: values.email,
         password: values.password,
         companyCode: values.companyCode ? values.companyCode : null,
+        createdAt: getDateCorrected(new Date()),
+        updatedAt: getDateCorrected(new Date()),
       });
 
       if (result.token) {

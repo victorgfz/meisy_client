@@ -9,6 +9,7 @@ import { CreateOrderModal } from '../components/create-order-modal';
 import { CancelOrderModal } from '../components/cancel-order-modal';
 import { SuccessMessage } from '../components/success-message';
 import { useAdvanceOrder } from '../hooks/use-advance-order';
+import { useInfoDashboard } from '../hooks/use-info-dashboard';
 
 export function OrdersPage() {
   const {
@@ -16,6 +17,7 @@ export function OrdersPage() {
     isCreateModalOpen, setIsCreateModalOpen, fetchOrders,
     isCancelModalOpen, setIsCancelModalOpen, itemToCancel, handleCancel
   } = useOrders();
+  const {fetchInfoDashboard} = useInfoDashboard();
 
   const { setAction } = useDashboardAction();
 
@@ -23,6 +25,7 @@ export function OrdersPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSuccessCreate = () => {
+    fetchInfoDashboard();
     fetchOrders();
     setSuccessMessage(ORDERS_CONSTANTS.messages.successAdd);
     setTimeout(() => setSuccessMessage(null), 4000);

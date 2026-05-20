@@ -7,6 +7,8 @@ interface RegisterFormValues {
   email: string;
   password: string;
   companyCode: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const authService = {

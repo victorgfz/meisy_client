@@ -6,6 +6,7 @@ import { productsService } from '../services/products.service';
 import { MeasurementUnit } from '../types/inputs.types';
 import { ProductionMeasurementUnit } from '../types/products.types';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
+import { getDateCorrected } from '../../../lib/date-corrected';
 
 const { validation } = PRODUCTS_CONSTANTS;
 
@@ -103,8 +104,8 @@ export function useCreateProduct(onSuccess: () => void): UseCreateProductReturn 
         productionTime: values.productionTime,
         servings: servingsNumber,
         productInputs: apiInputs,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: getDateCorrected(new Date()),
+        updatedAt: getDateCorrected(new Date()),
       });
 
       resetForm();

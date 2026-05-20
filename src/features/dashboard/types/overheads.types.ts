@@ -13,15 +13,15 @@ export const OverheadType = {
   Maintenance: 3,
 } as const;
 
-export interface RequestRegisterOverheadJson {
+export interface CreateOverheadRequest {
   type: typeof OverheadType[keyof typeof OverheadType];
   costPerHour: number;
-  updatedAt: Date;
-  createdAt: Date;
+  updatedAt: string;
+  createdAt: string;
 }
 
-export interface RequestUpdateOverheadJson {
+export interface UpdateOverheadRequest {
   costPerHour: number;
-  updatedAt: Date;
+  updatedAt: string;
 
 }

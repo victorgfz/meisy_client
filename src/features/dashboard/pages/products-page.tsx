@@ -93,7 +93,7 @@ export function ProductsPage() {
         item={itemToDelete}
         onClose={() => setIsDeleteModalOpen(false)}
         onSuccess={handleSuccessDelete}
-      /> 
+      />
     </div>
   );
 }
