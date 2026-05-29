@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Menu, X, LogOut, User as UserIcon, Settings } from 'lucide-react';
 import { DASHBOARD_CONSTANTS } from '../constants/dashboard.constants';
+import { useAuthContext } from '../../auth/contexts/auth.context';
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -9,6 +10,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ userName = 'Usuário', companyCode = "Não informado" }: DashboardHeaderProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { logout } = useAuthContext();
 
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
 
@@ -84,7 +86,10 @@ export function DashboardHeader({ userName = 'Usuário', companyCode = "Não inf
             </nav>
 
             <div className="p-4 border-t border-gray-100">
-              <button className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+              <button 
+                onClick={logout}
+                className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+              >
                 <LogOut className="w-5 h-5" />
                 <span className="font-medium">{DASHBOARD_CONSTANTS.menu.logout}</span>
               </button>

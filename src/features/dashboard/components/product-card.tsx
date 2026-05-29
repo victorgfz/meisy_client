@@ -20,8 +20,8 @@ export function ProductCard({ item, onEdit, onDelete, onViewDetail }: ProductCar
     }).format(value);
   };
 
-  const getUnitName = (value: number, enumValue: any) => {
-    return Object.keys(enumValue).find(key => enumValue[key] === value);
+  const getUnitName = (value: number, enumValue: typeof MeasurementUnit) => {
+    return Object.keys(enumValue).find(key => (enumValue as Record<string, string | number>)[key] === value) || value;
   };
 
   const formatDate = (date: Date | string) => {

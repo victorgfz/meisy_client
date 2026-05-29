@@ -1,9 +1,11 @@
 import { useLocation, Link } from 'react-router-dom';
 import { Home, ShoppingCart, Utensils, Egg, TrendingUp, UserIcon, LogOut, Settings } from 'lucide-react';
 import { DASHBOARD_CONSTANTS } from '../constants/dashboard.constants';
+import { useAuthContext } from '../../auth/contexts/auth.context';
 
 export function DesktopSidebar() {
   const location = useLocation();
+  const { logout } = useAuthContext();
 
   const navItems = [
     { label: DASHBOARD_CONSTANTS.navigation.home, path: '/dashboard/home', icon: Home },
@@ -63,7 +65,10 @@ export function DesktopSidebar() {
 
 
       <div className="p-4 border-t border-gray-100">
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+        <button 
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+        >
           <LogOut className="w-5 h-5" />
           <span className="font-medium">{DASHBOARD_CONSTANTS.menu.logout}</span>
         </button>

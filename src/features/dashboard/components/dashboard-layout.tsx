@@ -13,7 +13,6 @@ export function DashboardLayout() {
   const { user } = useAuthContext();
 
   const { infoDashboard, isLoading } = useInfoDashboard();
-  const loader = true
   return (
     <div className="h-screen overflow-hidden bg-bg-body flex md:pl-64 text-text-primary">
       <DesktopSidebar />

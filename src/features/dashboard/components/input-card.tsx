@@ -19,8 +19,8 @@ export function InputCard({ item, onEdit, onDelete }: InputCardProps) {
     }).format(value);
   };
 
-  const getUnitName = (value: number, enumValue: any) => {
-    return Object.keys(enumValue).find(key => enumValue[key] === value);
+  const getUnitName = (value: number, enumValue: typeof MeasurementUnit) => {
+    return Object.keys(enumValue).find(key => (enumValue as Record<string, string | number>)[key] === value) || value;
   };
 
   const formatDate = (date: Date) => {

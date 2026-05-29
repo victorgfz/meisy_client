@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal } from './modal';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { useProductDetail } from '../hooks/use-product-detail';
@@ -17,10 +16,9 @@ interface ProductDetailsModalProps {
 export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetailsModalProps) {
   const { productDetail, isLoading, error } = useProductDetail(isOpen ? productId : null);
 
-  const getUnitName = (value: number, enumObj: any) => {
-    return Object.keys(enumObj).find(key => enumObj[key] === value) || value;
-  };
-
+  const getUnitName = (value: number, enumObj: typeof MeasurementUnit | typeof ProductionMeasurementUnit) => {
+    return Object.keys(enumObj).find(key => (enumObj as Record<string, string | number>)[key] === value) || value;
+  }
   const getOverheadName = (type: number) => {
     switch (type) {
       case OverheadType.Electricity: return OVERHEADS_CONSTANTS.types.electricity;
@@ -71,7 +69,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
                 {PRODUCTS_CONSTANTS.form.amountLabel}
               </span>
               <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800">
-                {productDetail.amount} {getUnitName(productDetail.measurementUnit, MeasurementUnit)}
+                {productDetail.amount.toString().replace('.', ',')} {getUnitName(productDetail.measurementUnit, MeasurementUnit)}
               </div>
             </div>
 
@@ -79,7 +77,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
               <span className="text-sm font-bold text-gray-800 tracking-wide">
                 {PRODUCTS_CONSTANTS.form.priceLabel}
               </span>
-              <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800 text-gray-800">
+              <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800">
                 {formatCurrency(productDetail.price)}
               </div>
             </div>
@@ -101,7 +99,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
               <span className="text-sm font-bold text-gray-800 tracking-wide">
                 {PRODUCTS_CONSTANTS.details.productionTimeLabel}
               </span>
-              <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800 text-gray-800">
+              <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800">
                 {productDetail.productionTime}
               </div>
             </div>
@@ -126,7 +124,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
                       <div key={ing.id} className="flex flex-row items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-lg">
                         <span className="text-sm text-gray-700">{ing.description}</span>
                         <div className="flex gap-4 items-center">
-                          <span className="text-sm text-gray-600">{ing.productionAmount.toFixed(2)} {getUnitName(ing.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
+                          <span className="text-sm text-gray-600">{ing.productionAmount.toFixed(2).replace('.', ',')} {getUnitName(ing.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
                           <span className="text-sm text-red-600">{formatCurrency(ing.productionPrice)}</span>
                         </div>
                       </div>
@@ -143,7 +141,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
                       <div key={pkg.id} className="flex flex-row items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-lg">
                         <span className="text-sm text-gray-700">{pkg.description}</span>
                         <div className="flex gap-4 items-center">
-                          <span className="text-sm text-gray-600">{pkg.productionAmount} {getUnitName(pkg.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
+                          <span className="text-sm text-gray-600">{pkg.productionAmount.toString().replace('.', ',')} {getUnitName(pkg.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
                           <span className="text-sm text-red-600">{formatCurrency(pkg.productionPrice)}</span>
                         </div>
                       </div>
