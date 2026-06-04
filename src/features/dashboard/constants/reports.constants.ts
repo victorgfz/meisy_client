@@ -1,7 +1,7 @@
 export const REPORTS_CONSTANTS = {
-  empty: "Nenhum dado disponível para ser mostrado!.",
+  empty: "Nenhum dado disponível para ser mostrado!",
   metrics: {
-    revenue: 'Receita Total',
+    revenue: 'Total faturado',
     profit: 'Lucro Líquido',
     costs: 'Custos Totais',
     orders: 'Total de Pedidos',
@@ -9,7 +9,7 @@ export const REPORTS_CONSTANTS = {
   },
   bestSellingProducts: {
     title: 'Produtos Mais Vendidos',
-    emptyMessage: 'Nenhum produto vendido neste período.',
+    empty: 'Nenhum produto vendido neste período.',
     columns: {
       product: 'Produto',
       quantity: 'Qtd Vendida',
