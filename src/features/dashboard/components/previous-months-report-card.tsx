@@ -2,6 +2,7 @@ import { TrendingDown, TrendingUp } from "lucide-react"
 import type { PreviousMonthReport } from "../types/reports.types"
 import { subMonths, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { REPORTS_CONSTANTS } from "../constants/reports.constants";
 
 interface PreviousMonthsReportCardProps {
     data: PreviousMonthReport[]
@@ -92,7 +93,7 @@ function PreviousMonthsReportCard({data}: PreviousMonthsReportCardProps) {
                     </tbody>
                 </table>
             </div>)) :
-            (<p className="p-4 rounded bg-gray-100 text-sm ">Nenhum dado disponível para o período</p>)}
+            (<p className="p-4 rounded bg-gray-100 text-sm ">{REPORTS_CONSTANTS.empty}</p>)}
             </div>
 
 

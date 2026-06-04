@@ -5,7 +5,7 @@ export const PublicRoute = () => {
   const { isAuthenticated } = useAuthContext();
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard/inputs" replace />;
+    return <Navigate to="/dashboard/home" replace />;
   }
 
   return <Outlet />;

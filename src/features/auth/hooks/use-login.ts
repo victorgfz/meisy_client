@@ -62,7 +62,7 @@ export function useLogin(): UseLoginReturn {
         });
       }
 
-      navigate('/dashboard/inputs');
+      navigate('/dashboard/home');
     } catch (error: any) {
 
       const messages = error.response?.data?.errorMessages ?? ['Ocorreu um erro ao fazer login. Tente novamente.'];

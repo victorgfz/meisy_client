@@ -124,7 +124,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
                       <div key={ing.id} className="flex flex-row items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-lg">
                         <span className="text-sm text-gray-700">{ing.description}</span>
                         <div className="flex gap-4 items-center">
-                          <span className="text-sm text-gray-600">{ing.productionAmount.toFixed(2).replace('.', ',')} {getUnitName(ing.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
+                          <span className="text-sm text-gray-600">{ing.productionAmount.toFixed(2).replace('.', ',')}{getUnitName(ing.productionMeasurementUnit, ProductionMeasurementUnit)}</span>
                           <span className="text-sm text-red-600">{formatCurrency(ing.productionPrice)}</span>
                         </div>
                       </div>

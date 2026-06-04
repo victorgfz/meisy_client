@@ -86,7 +86,7 @@ export function useRegister(): UseRegisterReturn {
         });
       }
 
-      navigate('/dashboard/inputs');
+      navigate('/dashboard/home');
     } catch (error: any) {
       const messages = error.response?.data?.errorMessages ?? ['Ocorreu um erro ao registrar. Tente novamente.'];
       setServerErrors(messages);

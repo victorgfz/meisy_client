@@ -9,6 +9,7 @@ import { DashboardActionProvider } from './features/dashboard/contexts/dashboard
 import { ProductsPage } from './features/dashboard/pages/products-page';
 import { OrdersPage } from './features/dashboard/pages/orders-page';
 import { ReportsPage } from './features/dashboard/pages/reports-page';
+import { HomePage } from './features/dashboard/pages/home-page';
 
 export const router = createBrowserRouter([
   {
@@ -37,21 +38,25 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: 'inputs',
-            element: <InputsPage />,
-          },
-          {
-            path: 'products',
-            element: <ProductsPage />,
+            path: "home",
+            element: <HomePage />
           },
           {
             path: 'orders',
             element: <OrdersPage />,
           },
           {
+            path: 'products',
+            element: <ProductsPage />,
+          },
+          {
+            path: 'inputs',
+            element: <InputsPage />,
+          },
+          {
             path: 'reports',
             element: <ReportsPage />,
-          },
+          }
         ]
       }
     ],
