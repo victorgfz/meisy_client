@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { ReportsList } from "../components/reports-list";
+import { useReports } from "../hooks/use-reports";
 
 export function ReportsPage() {
+    const { reports, isLoading } = useReports();
 
     return (
         <div className="flex flex-col w-full max-w-3xl mx-auto relative pt-6">
-
-            <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-
-            </section>
+            <ReportsList reports={reports!} isLoading={isLoading} />
         </div>
     );
 }
