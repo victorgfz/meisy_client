@@ -6,11 +6,14 @@ import { DashboardSummary } from './dashboard-summary';
 import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { useAuthContext } from '../../auth/contexts/auth.context';
 import { useInfoDashboard } from '../hooks/use-info-dashboard';
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 
 export function DashboardLayout() {
   const { action } = useDashboardAction();
   const { user } = useAuthContext();
+  const [showMetrics, setShowMetrics] = useState(false)
 
   const { infoDashboard, isLoading } = useInfoDashboard();
   return (
@@ -25,7 +28,7 @@ export function DashboardLayout() {
 
           <DashboardHeader userName={user?.name ?? 'Usuário'} companyCode={user?.companyCode ?? "Não informado"} />
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between px-6 max-w-4xl mx-auto md:max-w-none lg:ml-0 lg:pr-10 gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between px-6 pt-4 max-w-4xl mx-auto md:max-w-none lg:ml-0 lg:pr-10 gap-4">
             {isLoading ? (
               <div className="flex-1 w-full">
                 <div className="relative z-10 text-white w-full md:max-w-none">
@@ -45,13 +48,22 @@ export function DashboardLayout() {
                 </div>
               </div>
             ) : (
-              <div className="flex-1">
+              <>
+              <div className={`flex-1 ${showMetrics ? "block" : "hidden"}`}>
                 <DashboardSummary metrics={infoDashboard} />
               </div>
+              <button 
+              onClick={() => setShowMetrics(!showMetrics)}
+              className='flex items-center justify-center'
+              >
+                <ChevronDown className={`text-white duration-400 ${showMetrics ? "rotate-180" : "rotate-0"}`} />
+              </button>
+              </>
+              
             )}
 
             {action && (
-              <div className="shrink-0 w-full lg:w-auto mt-2 md:mt-0 relative z-10 pb-6 md:pb-6 text-white">
+              <div className="shrink-0 w-full lg:w-auto relative z-10 pb-6 text-white">
                 <button
                   onClick={action.onClick}
                   className="w-full lg:w-auto bg-primary hover:bg-primary-hover shadow-lg hover:shadow-xl rounded-2xl py-4 lg:py-4 px-6 flex items-center justify-center flex-row lg:flex-col gap-2 lg:gap-0 font-medium text-lg lg:text-base transition-all active:scale-[0.98]"
