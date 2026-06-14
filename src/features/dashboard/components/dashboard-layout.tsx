@@ -48,17 +48,13 @@ export function DashboardLayout() {
                 </div>
               </div>
             ) : (
-              <>
-              <div className={`flex-1 ${showMetrics ? "block" : "hidden"}`}>
-                <DashboardSummary metrics={infoDashboard} />
+              <div className="flex-1 w-full">
+                <DashboardSummary 
+                  metrics={infoDashboard} 
+                  showMetrics={showMetrics}
+                  onToggleMetrics={() => setShowMetrics(!showMetrics)}
+                />
               </div>
-              <button 
-              onClick={() => setShowMetrics(!showMetrics)}
-              className='flex items-center justify-center'
-              >
-                <ChevronDown className={`text-white duration-400 ${showMetrics ? "rotate-180" : "rotate-0"}`} />
-              </button>
-              </>
               
             )}
 
