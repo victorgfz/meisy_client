@@ -54,9 +54,10 @@ export function useLogin(): UseLoginReturn {
       const result = await authService.login(values);
 
 
-      if (result.token) {
+      if (result.token && result.refreshToken) {
         login({
           token: result.token,
+          refreshToken: result.refreshToken,
           name: result.name,
           companyCode: result.companyCode
         });

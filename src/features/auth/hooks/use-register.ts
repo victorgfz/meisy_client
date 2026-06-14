@@ -78,9 +78,10 @@ export function useRegister(): UseRegisterReturn {
         updatedAt: getDateCorrected(new Date()),
       });
 
-      if (result.token) {
+      if (result.token && result.refreshToken) {
         login({
           token: result.token,
+          refreshToken: result.refreshToken,
           name: result.name,
           companyCode: result.companyCode
         });

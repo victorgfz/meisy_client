@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'MEISY_AUTH_TOKEN';
+const REFRESH_TOKEN_KEY = 'MEISY_AUTH_REFRESH_TOKEN';
 const USER_KEY = 'MEISY_AUTH_USER';
 
 export interface AuthUser {
@@ -17,6 +18,20 @@ export const tokenStorage = {
 
   removeToken: (): void => {
     localStorage.removeItem(TOKEN_KEY);
+  },
+};
+
+export const refreshTokenStorage = {
+  getToken: (): string | null => {
+    return localStorage.getItem(REFRESH_TOKEN_KEY);
+  },
+
+  setToken: (token: string): void => {
+    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  },
+
+  removeToken: (): void => {
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 };
 

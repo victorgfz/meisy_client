@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
-import { userStorage, tokenStorage } from '../../../lib/storage';
+import { userStorage, tokenStorage, refreshTokenStorage } from '../../../lib/storage';
 import type { AuthUser } from '../../../lib/storage';
 
 interface LoginData {
   token: string;
+  refreshToken: string;
   name: string;
   companyCode: string | null;
 }
@@ -24,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback((data: LoginData) => {
     tokenStorage.setToken(data.token);
+    refreshTokenStorage.setToken(data.refreshToken);
 
     const newUser = { name: data.name, companyCode: data.companyCode };
     userStorage.setUser(newUser);
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     tokenStorage.removeToken();
+    refreshTokenStorage.removeToken();
     userStorage.removeUser();
     setUser(null);
     setIsAuthenticated(false);
