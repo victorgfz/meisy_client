@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: true, // Isso força o Vite a ouvir em todos os endereços (0.0.0.0)
     port: 5173,
+    allowedHosts: ['tanned-sugar-botch.ngrok-free.dev']
   },
 })

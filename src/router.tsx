@@ -10,6 +10,7 @@ import { ProductsPage } from './features/dashboard/pages/products-page';
 import { OrdersPage } from './features/dashboard/pages/orders-page';
 import { ReportsPage } from './features/dashboard/pages/reports-page';
 import { HomePage } from './features/dashboard/pages/home-page';
+import { SettingsPage } from './features/dashboard/pages/settings-page';
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
           {
             path: 'reports',
             element: <ReportsPage />,
+          },
+          {
+            path: 'settings',
+            element: <SettingsPage />,
           }
         ]
       }

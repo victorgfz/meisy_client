@@ -7,7 +7,6 @@ import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { useAuthContext } from '../../auth/contexts/auth.context';
 import { useInfoDashboard } from '../hooks/use-info-dashboard';
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 
 
 export function DashboardLayout() {
@@ -16,6 +15,7 @@ export function DashboardLayout() {
   const [showMetrics, setShowMetrics] = useState(false)
 
   const { infoDashboard, isLoading } = useInfoDashboard();
+  console.log(infoDashboard)
   return (
     <div className="h-screen overflow-hidden bg-bg-body flex md:pl-64 text-text-primary">
       <DesktopSidebar />

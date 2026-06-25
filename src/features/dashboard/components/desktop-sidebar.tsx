@@ -55,10 +55,13 @@ export function DesktopSidebar() {
             </button>
           </li>
           <li>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-text-primary hover:bg-gray-50 transition-colors">
+            <Link
+              to="/dashboard/settings"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-text-primary hover:bg-gray-50 transition-colors"
+            >
               <Settings className="w-5 h-5 text-text-secondary" />
               <span>{DASHBOARD_CONSTANTS.menu.settings}</span>
-            </button>
+            </Link>
           </li>
         </ul>
       </nav>

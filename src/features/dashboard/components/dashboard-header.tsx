@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, LogOut, User as UserIcon, Settings } from 'lucide-react';
 import { DASHBOARD_CONSTANTS } from '../constants/dashboard.constants';
 import { useAuthContext } from '../../auth/contexts/auth.context';
@@ -77,10 +78,14 @@ export function DashboardHeader({ userName = 'Usuário', companyCode = "Não inf
                   </button>
                 </li>
                 <li>
-                  <button className="w-full flex items-center gap-3 px-6 py-4 text-text-primary hover:bg-gray-50 transition-colors">
+                  <Link
+                    to="/dashboard/settings"
+                    onClick={toggleDrawer}
+                    className="w-full flex items-center gap-3 px-6 py-4 text-text-primary hover:bg-gray-50 transition-colors"
+                  >
                     <Settings className="w-5 h-5 text-text-secondary" />
                     <span>{DASHBOARD_CONSTANTS.menu.settings}</span>
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </nav>
