@@ -24,10 +24,11 @@ const editProductSchema = z.object({
   })).optional()
 });
 
-export type EditProductFormValues = z.infer<typeof editProductSchema>;
+export type EditProductFormInput = z.input<typeof editProductSchema>;
+export type EditProductFormValues = z.output<typeof editProductSchema>;
 
 interface UseEditProductReturn {
-  form: UseFormReturn<EditProductFormValues>;
+  form: UseFormReturn<EditProductFormInput, any, EditProductFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
   onSubmit: (values: EditProductFormValues) => void;
@@ -53,7 +54,7 @@ export function useEditProduct(
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<string[] | null>(null);
 
-  const form = useForm<EditProductFormValues>({
+  const form = useForm<EditProductFormInput, any, EditProductFormValues>({
     resolver: zodResolver(editProductSchema),
     defaultValues: {
       description: '',

@@ -24,10 +24,11 @@ const createProductSchema = z.object({
   })).optional()
 });
 
-export type CreateProductFormValues = z.infer<typeof createProductSchema>;
+export type CreateProductFormInput = z.input<typeof createProductSchema>;
+export type CreateProductFormValues = z.output<typeof createProductSchema>;
 
 interface UseCreateProductReturn {
-  form: UseFormReturn<CreateProductFormValues>;
+  form: UseFormReturn<CreateProductFormInput, any, CreateProductFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
   onSubmit: (values: CreateProductFormValues) => void;
@@ -38,7 +39,7 @@ export function useCreateProduct(onSuccess: () => void): UseCreateProductReturn 
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<string[] | null>(null);
 
-  const form = useForm<CreateProductFormValues>({
+  const form = useForm<CreateProductFormInput, any, CreateProductFormValues>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
       description: '',

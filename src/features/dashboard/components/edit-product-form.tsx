@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
-import type { EditProductFormValues } from '../hooks/use-edit-product';
+import type { EditProductFormInput, EditProductFormValues } from '../hooks/use-edit-product';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 import { useInputs } from '../hooks/use-inputs';
@@ -9,7 +9,7 @@ import type { Input } from '../types/inputs.types';
 const { form: formConstants } = PRODUCTS_CONSTANTS;
 
 interface EditProductFormProps {
-  form: UseFormReturn<EditProductFormValues>;
+  form: UseFormReturn<EditProductFormInput, any, EditProductFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
   onSubmit: (values: EditProductFormValues) => void;

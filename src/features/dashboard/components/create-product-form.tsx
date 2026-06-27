@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
-import type { CreateProductFormValues } from '../hooks/use-create-product';
+import type { CreateProductFormInput, CreateProductFormValues } from '../hooks/use-create-product';
 import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 import { useInputs } from '../hooks/use-inputs';
@@ -9,7 +9,7 @@ import type { Input } from '../types/inputs.types';
 const { form: formConstants } = PRODUCTS_CONSTANTS;
 
 interface CreateProductFormProps {
-  form: UseFormReturn<CreateProductFormValues>;
+  form: UseFormReturn<CreateProductFormInput, any, CreateProductFormValues>;
   isLoading: boolean;
   serverErrors: string[] | null;
   onSubmit: (values: CreateProductFormValues) => void;

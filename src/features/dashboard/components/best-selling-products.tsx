@@ -23,7 +23,7 @@ export function BestSellingProducts({ products }: BestSellingProductsProps) {
 
       {products.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-8 text-center bg-gray-50/50 rounded-lg border border-dashed border-gray-200">
-          <p className="text-text-muted text-sm">{REPORTS_CONSTANTS.bestSellingProducts.emptyMessage}</p>
+          <p className="text-text-muted text-sm">{REPORTS_CONSTANTS.bestSellingProducts.empty}</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
