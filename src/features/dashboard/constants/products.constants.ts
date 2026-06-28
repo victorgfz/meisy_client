@@ -33,7 +33,8 @@ export const PRODUCTS_CONSTANTS = {
     packagingSubtitle: 'Embalagens',
     overheadsSubtitle: 'Custos Indiretos',
     amountInputPlaceholder: 'Quantidade utilizada',
-    unitPlaceholder: 'Unid'
+    unitPlaceholder: 'Unid',
+    noInputs: "Nenhum insumo dessa categoria cadastrado ainda. Para cadastrar um produto é necessário ter ao menos um ingrediente e uma embalagem."
   },
   details: {
     costPerServingLabel: 'Custo por porção',

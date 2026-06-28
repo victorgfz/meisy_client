@@ -5,6 +5,7 @@ import { ORDERS_CONSTANTS } from '../constants/orders.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 import { useProducts } from '../hooks/use-products';
 import { type Product } from '../types/products.types';
+import { useNavigate } from 'react-router-dom';
 
 const { form: formConstants } = ORDERS_CONSTANTS;
 
@@ -55,18 +56,21 @@ export function CreateOrderForm({
   if (serverErrors) allErrors.push(...serverErrors);
 
   // Calculate total price dynamically
-  const watchedAmounts = watch(products.map(p => `orderProducts.${p.id}.amount`) as any[]);
-
+  let watchedAmounts: number[];
   let totalPrice = 0;
-  products.forEach((product, index) => {
-    const amountStr = watchedAmounts[index];
-    if (amountStr) {
-      const amount = parseFloat(String(amountStr).replace(/\./g, '').replace(',', '.'));
-      if (!isNaN(amount) && amount > 0) {
-        totalPrice += product.price * amount;
+  if(products.length > 0){
+    watchedAmounts = watch(products.map(p => `orderProducts.${p.id}.amount`) as any[]);
+    products.forEach((product, index) => {
+      const amountStr = watchedAmounts[index];
+      if (amountStr) {
+        const amount = parseFloat(String(amountStr).replace(/\./g, '').replace(',', '.'));
+        if (!isNaN(amount) && amount > 0) {
+          totalPrice += product.price * amount;
+        }
       }
-    }
-  });
+    });
+  }
+
 
   const handleIncrement = (itemId: number) => {
     const current = parseFloat(getValues(`orderProducts.${itemId}.amount`) || '0');
@@ -85,9 +89,13 @@ export function CreateOrderForm({
   };
 
   const formatPrice = (price: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
+   const navigate = useNavigate();
 
   const renderProductList = (items: Product[], title: string) => {
-    if (items.length === 0) return null;
+    
+    if (items.length === 0) return <div className="text-center text-xs p-4 text-text-secondary bg-white rounded-3xl border border-dashed border-gray-200 flex flex-col items-center justify-center gap-2">{ORDERS_CONSTANTS.form.noProducts}
+        <button className='text-primary underline' onClick={() => navigate('/dashboard/products')}>Ir para o cadastro de produto</button>
+        </div>;
 
     return (
       <div className="flex flex-col gap-3 mt-2">

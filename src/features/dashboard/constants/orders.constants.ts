@@ -50,6 +50,7 @@ export const ORDERS_CONSTANTS = {
     cancelConfirmButton: 'Sim, Cancelar',
     cancelingButton: 'Cancelando...',
     keepButton: 'Não, Manter',
+    noProducts: "Nenhum produto cadastrado ainda. Para registrar um pedido é necessário cadastrar pelo menos um produto."
   },
   validation: {
     deliveryDateRequired: 'A data de entrega é obrigatória.',

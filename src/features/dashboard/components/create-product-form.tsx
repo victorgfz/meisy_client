@@ -5,6 +5,7 @@ import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 import { useInputs } from '../hooks/use-inputs';
 import type { Input } from '../types/inputs.types';
+import { useNavigate } from 'react-router-dom';
 
 const { form: formConstants } = PRODUCTS_CONSTANTS;
 
@@ -48,7 +49,7 @@ export function CreateProductForm({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
-    let value = e.target.value.replace(/[^0-9.,]/g, "").replace(/\./g, ',');
+    const value = e.target.value.replace(/[^0-9.,]/g, "").replace(/\./g, ',');
     setValue(fieldName, value, { shouldValidate: true });
   };
 
@@ -66,8 +67,12 @@ export function CreateProductForm({
     setValue("productionTime", formatted, { shouldValidate: true });
   };
 
+   const navigate = useNavigate();
+
   const renderInputList = (items: Input[], title: string) => {
-    if (items.length === 0) return null;
+    if (items.length === 0) return <div className="text-center text-xs p-4 text-text-secondary bg-white rounded-3xl border border-dashed border-gray-200 flex flex-col items-center justify-center gap-2">{PRODUCTS_CONSTANTS.form.noInputs}
+    <button className='text-primary underline' onClick={() => navigate('/dashboard/inputs')}>Ir para o cadastro de insumo</button>
+    </div>;
 
     return (
       <div className="flex flex-col gap-3 mt-2">

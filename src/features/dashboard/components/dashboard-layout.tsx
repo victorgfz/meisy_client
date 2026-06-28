@@ -15,7 +15,6 @@ export function DashboardLayout() {
   const [showMetrics, setShowMetrics] = useState(false)
 
   const { infoDashboard, isLoading } = useInfoDashboard();
-  console.log(infoDashboard)
   return (
     <div className="h-screen overflow-hidden bg-bg-body flex md:pl-64 text-text-primary">
       <DesktopSidebar />
