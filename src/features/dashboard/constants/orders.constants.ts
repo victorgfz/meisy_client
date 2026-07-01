@@ -50,6 +50,10 @@ export const ORDERS_CONSTANTS = {
     cancelConfirmButton: 'Sim, Cancelar',
     cancelingButton: 'Cancelando...',
     keepButton: 'Não, Manter',
+    advanceModalTitle: 'Avançar Pedido',
+    advanceConfirmation: 'Tem certeza que deseja avançar o pedido #{id} para {status}?',
+    advanceConfirmButton: 'Sim, Avançar',
+    advancingButton: 'Avançando...',
     noProducts: "Nenhum produto cadastrado ainda. Para registrar um pedido é necessário cadastrar pelo menos um produto."
   },
   validation: {

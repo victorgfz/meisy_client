@@ -7,8 +7,6 @@ export function useOrders() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [itemToCancel, setItemToCancel] = useState<Order | null>(null);
 
   const fetchOrders = useCallback(async () => {
     
@@ -38,11 +36,6 @@ export function useOrders() {
     setIsCreateModalOpen(true);
   }, []);
 
-  const handleCancel = useCallback((order: Order) => {
-    setItemToCancel(order);
-    setIsCancelModalOpen(true);
-  }, []);
-
   return {
     orders,
     pendingOrders,
@@ -52,11 +45,7 @@ export function useOrders() {
     isLoading,
     isCreateModalOpen,
     setIsCreateModalOpen,
-    isCancelModalOpen,
-    setIsCancelModalOpen,
-    itemToCancel,
     fetchOrders,
     handleCreate,
-    handleCancel,
   };
 }

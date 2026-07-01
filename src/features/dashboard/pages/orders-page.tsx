@@ -4,25 +4,28 @@ import { useOrders } from '../hooks/use-orders';
 import { OrderList } from '../components/order-list';
 import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
-import { OrderStatus } from '../types/orders.types';
+import { type Order, OrderStatus } from '../types/orders.types';
 import { CreateOrderModal } from '../components/create-order-modal';
-import { CancelOrderModal } from '../components/cancel-order-modal';
 import { SuccessMessage } from '../components/success-message';
 import { useAdvanceOrder } from '../hooks/use-advance-order';
 import { useInfoDashboard } from '../hooks/use-info-dashboard';
+import { ModalConfirmation } from '../components/modal-confirmation';
+import { useCancelOrder } from '../hooks/use-cancel-order';
+
+type ConfirmationAction = 'advance' | 'cancel';
 
 export function OrdersPage() {
   const {
     pendingOrders, preparingOrders, readyOrders, completedOrders, isLoading, handleCreate,
     isCreateModalOpen, setIsCreateModalOpen, fetchOrders,
-    isCancelModalOpen, setIsCancelModalOpen, itemToCancel, handleCancel
   } = useOrders();
-  const {fetchInfoDashboard} = useInfoDashboard();
+  const { fetchInfoDashboard } = useInfoDashboard();
 
   const { setAction } = useDashboardAction();
 
   const [activeTab, setActiveTab] = useState<number>(0);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [confirmation, setConfirmation] = useState<{ action: ConfirmationAction; order: Order } | null>(null);
 
   const handleSuccessCreate = () => {
     fetchInfoDashboard();
@@ -43,7 +46,52 @@ export function OrdersPage() {
     setTimeout(() => setSuccessMessage(null), 4000);
   };
 
-  const { handleAdvance } = useAdvanceOrder(handleSuccessAdvance);
+  const closeConfirmationState = () => {
+    setConfirmation(null);
+  };
+
+  const {
+    handleAdvance,
+    isLoading: isAdvancing,
+    serverErrors: advanceServerErrors,
+    resetError: resetAdvanceError,
+  } = useAdvanceOrder(() => {
+    handleSuccessAdvance();
+    closeConfirmationState();
+  });
+
+  const {
+    handleCancel: confirmCancelOrder,
+    isLoading: isCanceling,
+    serverErrors: cancelServerErrors,
+    resetError: resetCancelError,
+  } = useCancelOrder(confirmation?.order ?? null, () => {
+    handleSuccessCancel();
+    closeConfirmationState();
+  });
+
+  const openConfirmation = (action: ConfirmationAction, order: Order) => {
+    resetAdvanceError();
+    resetCancelError();
+    setConfirmation({ action, order });
+  };
+
+  const handleCloseConfirmation = () => {
+    resetAdvanceError();
+    resetCancelError();
+    closeConfirmationState();
+  };
+
+  const handleConfirmAction = () => {
+    if (!confirmation) return;
+
+    if (confirmation.action === 'advance') {
+      handleAdvance(confirmation.order.id);
+      return;
+    }
+
+    confirmCancelOrder();
+  };
 
   useEffect(() => {
     setAction({
@@ -74,6 +122,23 @@ export function OrdersPage() {
     { id: OrderStatus.Completed, label: ORDERS_CONSTANTS.tabs.completed, count: completedOrders.length },
   ];
 
+  const nextStatusLabel = confirmation
+    ? ORDERS_CONSTANTS.statusDisplay[confirmation.order.status + 1] || ''
+    : '';
+
+  const confirmationTitle = confirmation?.action === 'advance'
+    ? ORDERS_CONSTANTS.form.advanceModalTitle
+    : ORDERS_CONSTANTS.form.cancelModalTitle;
+
+  const confirmationMessage = confirmation?.action === 'advance'
+    ? ORDERS_CONSTANTS.form.advanceConfirmation
+      .replace('{id}', confirmation.order.id.toString())
+      .replace('{status}', nextStatusLabel)
+    : ORDERS_CONSTANTS.form.cancelConfirmation.replace('{id}', confirmation?.order.id.toString() || '');
+
+  const confirmationIsLoading = confirmation?.action === 'advance' ? isAdvancing : isCanceling;
+  const confirmationServerErrors = confirmation?.action === 'advance' ? advanceServerErrors : cancelServerErrors;
+
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto relative px-4 sm:px-0">
 
@@ -98,8 +163,8 @@ export function OrdersPage() {
         <OrderList 
           orders={getActiveList()} 
           isLoading={isLoading} 
-          onAdvance={(order) => handleAdvance(order.id)}
-          onCancel={handleCancel}
+          onAdvance={(order) => openConfirmation('advance', order)}
+          onCancel={(order) => openConfirmation('cancel', order)}
         />
       </section>
 
@@ -109,11 +174,18 @@ export function OrdersPage() {
         onSuccess={handleSuccessCreate}
       />
 
-      <CancelOrderModal
-        isOpen={isCancelModalOpen}
-        item={itemToCancel}
-        onClose={() => setIsCancelModalOpen(false)}
-        onSuccess={handleSuccessCancel}
+      <ModalConfirmation
+        isOpen={!!confirmation}
+        title={confirmationTitle}
+        message={confirmationMessage}
+        confirmLabel={confirmation?.action === 'advance' ? ORDERS_CONSTANTS.form.advanceConfirmButton : ORDERS_CONSTANTS.form.cancelConfirmButton}
+        cancelLabel={confirmation?.action === 'advance' ? ORDERS_CONSTANTS.form.cancelButton : ORDERS_CONSTANTS.form.keepButton}
+        loadingLabel={confirmation?.action === 'advance' ? ORDERS_CONSTANTS.form.advancingButton : ORDERS_CONSTANTS.form.cancelingButton}
+        isLoading={confirmationIsLoading}
+        serverErrors={confirmationServerErrors}
+        variant={confirmation?.action === 'advance' ? 'primary' : 'danger'}
+        onClose={handleCloseConfirmation}
+        onConfirm={handleConfirmAction}
       />
     </div>
   );
