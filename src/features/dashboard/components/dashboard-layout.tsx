@@ -20,14 +20,14 @@ export function DashboardLayout() {
       <DesktopSidebar />
 
       <main className="flex-1 flex flex-col min-w-0 w-full h-full relative ">
-        <div className="shrink-0 bg-gradient-brand pb-4 rounded-b-[2rem] md:rounded-b-none relative overflow-visible z-40 md:pb-8">
+        <div className="shrink-0 pb-2 bg-gradient-brand rounded-b-[2rem] md:rounded-b-none relative overflow-visible z-40">
           <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none opacity-50 z-0">
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
           </div>
 
           <DashboardHeader userName={user?.name ?? 'Usuário'} companyCode={user?.companyCode ?? "Não informado"} />
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between px-6 pt-4 max-w-4xl mx-auto md:max-w-none lg:ml-0 lg:pr-10 gap-4">
+          <div className="flex flex-col lg:flex-row items-center justify-between px-6 py-2 my-2 max-w-4xl mx-auto md:max-w-none gap-4">
             {isLoading ? (
               <div className="flex-1 w-full">
                 <div className="relative z-10 text-white w-full md:max-w-none">
@@ -58,7 +58,7 @@ export function DashboardLayout() {
             )}
 
             {action && (
-              <div className="shrink-0 w-full lg:w-auto relative z-10 pb-6 text-white">
+              <div className="shrink-0 w-full lg:w-auto relative z-10 text-white">
                 <button
                   onClick={action.onClick}
                   className="w-full lg:w-auto bg-primary hover:bg-primary-hover shadow-lg hover:shadow-xl rounded-2xl py-4 lg:py-4 px-6 flex items-center justify-center flex-row lg:flex-col gap-2 lg:gap-0 font-medium text-lg lg:text-base transition-all active:scale-[0.98]"

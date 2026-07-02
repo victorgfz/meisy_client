@@ -28,9 +28,10 @@ export function DashboardSummary({ metrics, showMetrics, onToggleMetrics }: Dash
   }
 
   return (
-    <div className="relative z-10 text-white w-full md:max-w-none">
-      <div className="flex items-center justify-center lg:justify-start gap-3 my-4">
-        <h2 className="text-lg md:text-xl font-medium">
+    <div className="relative z-10 text-white w-full md:max-w-none ">
+      <div className={`flex items-center justify-center
+        transition-all duration-300 ease-in-out gap-3 ${showMetrics ? "my-2" : "my-0"}`}>
+        <h2 className="text-lg md:text-xl font-medium text-center ">
           {DASHBOARD_CONSTANTS.summary.title.replace('{month}', new Date().toLocaleString('pt-BR', { month: 'long' }))}
         </h2>
         <button
@@ -43,7 +44,7 @@ export function DashboardSummary({ metrics, showMetrics, onToggleMetrics }: Dash
       </div>
 
       <div
-        className={`transition-all duration-500 ease-in-out overflow-hidden ${
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
           showMetrics ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
