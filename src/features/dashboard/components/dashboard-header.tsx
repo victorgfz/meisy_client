@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, LogOut, User as UserIcon, Settings } from 'lucide-react';
+import { Menu, X, LogOut, User as UserIcon, Settings, Copy } from 'lucide-react';
 import { DASHBOARD_CONSTANTS } from '../constants/dashboard.constants';
 import { useAuthContext } from '../../auth/contexts/auth.context';
 
@@ -11,11 +11,22 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ userName = 'Usuário', companyCode = "Não informado" }: DashboardHeaderProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [copy, setCopy] = useState(false)
   const { logout } = useAuthContext();
-
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
 
-
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(companyCode)
+      setCopy(true)
+    } catch {
+      setCopy(false)
+    } finally {
+      setTimeout(() => {
+        setCopy(false)
+      }, 1000)
+    }
+  }
 
   return (
     <>
@@ -24,11 +35,15 @@ export function DashboardHeader({ userName = 'Usuário', companyCode = "Não inf
           <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
             <UserIcon className="text-primary w-6 h-6" />
           </div>
-          <div className='md:flex md:flex-col md:items-start md:justify-center md:gap-2'>
+          <div className='flex flex-col items-start justify-center gap-2'>
             <h1 className="text-lg font-normal leading-none">
               {DASHBOARD_CONSTANTS.greeting.replace('{name}', userName)}
             </h1>
-            <p className='text-sm font-light text-white/50'>Código da empresa: <span className='font-bold'>{companyCode}</span> </p>
+            <button onClick={() => handleCopy()}
+             className={`text-sm font-light text-white/70 flex items-center gap-1 bg-white/10 py-0.5 px-2 rounded-lg border
+              ${copy ? " border-white/30 border-dashed" : "border-white/10"}`}>Código da empresa:
+              {copy ? <span className='font-bold'>Copiado!</span> : <><span className='font-bold'>{companyCode}</span><Copy size={12} /></>}
+             </button>
           </div>
 
         </div>
