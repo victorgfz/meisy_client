@@ -10,7 +10,6 @@ interface PreviousMonthsReportCardProps {
 
 function PreviousMonthsReportCard({data}: PreviousMonthsReportCardProps) {
     const formattedCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-    const isIncrease = (value: number) => value > 1 ? true : false
     const formattedVariationRate = (value: number) => ((value -1) * 100).toFixed(2)
     const monthName = (value: number) => format(subMonths(new Date(), value) , 'MMMM', {locale: ptBR}) 
 
@@ -40,17 +39,21 @@ function PreviousMonthsReportCard({data}: PreviousMonthsReportCardProps) {
                         <td className="p-1 align-top">
                             <div className="flex flex-col items-center">
                             <p className="text-xs">{formattedCurrency(item.totalRevenue)}</p>
-                            {isIncrease(item.totalRevenueVariationRate) ? (
-                                <span className="text-green-500 text-[8px] flex items-center gap-1">
-                                +{formattedVariationRate(item.totalRevenueVariationRate)}%
-                                <TrendingUp size={10} />
-                                </span>
-                            ) : (
-                                <span className="text-red-500 text-[8px] flex items-center gap-1">
-                                {formattedVariationRate(item.totalRevenueVariationRate)}%
-                                <TrendingDown size={10} />
-                                </span>
-                            )}
+                            {item.totalRevenueVariationRate > 1 ?
+                            <p className="text-green-500 text-[8px] flex items-center justify-start">
+                            +{formattedVariationRate(item.totalRevenueVariationRate)}%
+                            <TrendingUp size={15}/>
+                            </p>
+                            :
+                            (item.totalRevenueVariationRate > 0 ?
+                            <p className="text-red-500 text-[8px] flex items-center justify-start">
+                            {formattedVariationRate(item.totalRevenueVariationRate)}%
+                            <TrendingDown size={15}/>
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-[8px] italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                             </div>
                         </td>
 
@@ -58,17 +61,21 @@ function PreviousMonthsReportCard({data}: PreviousMonthsReportCardProps) {
                         <td className="p-1 align-top border-l border-gray-300">
                             <div className="flex flex-col items-center">
                             <p className="text-xs">{formattedCurrency(item.totalCosts)}</p>
-                            {isIncrease(item.totalCostsVariationRate) ? (
-                                <span className="text-red-500 text-[8px] flex items-center gap-1">
-                                +{formattedVariationRate(item.totalCostsVariationRate)}%
-                                <TrendingUp size={10} />
-                                </span>
-                            ) : (
-                                <span className=" text-green-500 text-[8px] flex items-center gap-1">
-                                {formattedVariationRate(item.totalCostsVariationRate)}%
-                                <TrendingDown size={10} />
-                                </span>
-                            )}
+                            {item.totalCostsVariationRate > 1 ?
+                            <p className="text-red-500 text-[8px] flex items-center justify-start">
+                            +{formattedVariationRate(item.totalCostsVariationRate)}%
+                            <TrendingUp size={15}/>
+                            </p>
+                            :
+                            (item.totalCostsVariationRate > 0 ?
+                            <p className="text-green-500 text-[8px] flex items-center justify-start">
+                            {formattedVariationRate(item.totalCostsVariationRate)}%
+                            <TrendingDown size={15}/>
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-[8px] italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                             </div>
                         </td>
 
@@ -76,17 +83,21 @@ function PreviousMonthsReportCard({data}: PreviousMonthsReportCardProps) {
                         <td className="p-1 align-top border-l border-gray-300">
                             <div className="flex flex-col items-center">
                             <p className="text-xs">{formattedCurrency(item.totalProfit)}</p>
-                            {isIncrease(item.totalProfitVariationRate) ? (
-                                <span className="text-green-500 text-[8px] flex items-center gap-1">
-                                +{formattedVariationRate(item.totalProfitVariationRate)}%
-                                <TrendingUp size={10} />
-                                </span>
-                            ) : (
-                                <span className="text-red-500 text-[8px] flex items-center gap-1">
-                                {formattedVariationRate(item.totalProfitVariationRate)}%
-                                <TrendingDown size={10} />
-                                </span>
-                            )}
+                             {item.totalProfitVariationRate > 1 ?
+                            <p className="text-green-500 text-[8px] flex items-center justify-start">
+                            +{formattedVariationRate(item.totalProfitVariationRate)}%
+                            <TrendingUp size={15}/>
+                            </p>
+                            :
+                            (item.totalProfitVariationRate > 0 ?
+                            <p className="text-red-500 text-[8px] flex items-center justify-start">
+                            {formattedVariationRate(item.totalProfitVariationRate)}%
+                            <TrendingDown size={15}/>
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-[8px] italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                             </div>
                         </td>
                         </tr>

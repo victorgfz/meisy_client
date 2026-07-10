@@ -6,11 +6,8 @@ interface CurrentMonthReportCardProps {
     data: CurrentMonthReport
 }
 
-
-
 export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
     const formattedCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-    const isIncrease = (value: number) => value > 1 ? true : false
     const formattedVariationRate = (value: number) => ((value -1) * 100).toFixed(2)
     return (
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 transition-shadow flex flex-col gap-6 w-full">
@@ -29,15 +26,22 @@ export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
                                 </span>
                                 } 
                             </p>
-                            {isIncrease(data.quantityOfOrdersVariationRate) ?
+                            {data.quantityOfOrdersVariationRate > 1 ?
                             <p className="text-green-500 text-xs flex items-center justify-start">
                             +{formattedVariationRate(data.quantityOfOrdersVariationRate)}%
                             <TrendingUp size={15}/>
-                            </p>:
+                            </p>
+                            :
+                            (data.quantityOfOrdersVariationRate > 0 ?
                             <p className="text-red-500 text-xs flex items-center justify-start">
                             {formattedVariationRate(data.quantityOfOrdersVariationRate)}%
                             <TrendingDown size={15}/>
-                            </p>}
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-xs italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
+                            
                         </div>
                     </div>
                     <div>
@@ -47,15 +51,21 @@ export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
                             {formattedCurrency(data.totalRevenue)}
                         
                             </p>
-                            {isIncrease(data.totalRevenueVariationRate) ?
-                            <p className="text-green-500 text-xs flex items-center gap-1 justify-start">
+                            {data.totalRevenueVariationRate > 1 ?
+                            <p className="text-green-500 text-xs flex items-center justify-start">
                             +{formattedVariationRate(data.totalRevenueVariationRate)}%
                             <TrendingUp size={15}/>
-                            </p>:
+                            </p>
+                            :
+                            (data.totalRevenueVariationRate > 0 ?
                             <p className="text-red-500 text-xs flex items-center justify-start">
                             {formattedVariationRate(data.totalRevenueVariationRate)}%
                             <TrendingDown size={15}/>
-                            </p>}
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-xs italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                         </div>
                     </div>
                     <div>
@@ -65,15 +75,21 @@ export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
                             {formattedCurrency(data.totalCosts)}
                         
                             </p>
-                            {isIncrease(data.totalCostsVariationRate) ?
-                            <p className=" text-red-500 text-xs flex items-center gap-1 justify-start">
+                            {data.totalCostsVariationRate > 1 ?
+                            <p className="text-red-500 text-xs flex items-center justify-start">
                             +{formattedVariationRate(data.totalCostsVariationRate)}%
                             <TrendingUp size={15}/>
-                            </p>:
-                            <p className="text-green-500 text-xs flex items-center gap-1 justify-start">
+                            </p>
+                            :
+                            (data.totalCostsVariationRate > 0 ?
+                            <p className="text-green-500 text-xs flex items-center justify-start">
                             {formattedVariationRate(data.totalCostsVariationRate)}%
                             <TrendingDown size={15}/>
-                            </p>}
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-xs italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                         </div>
                     </div>
                     <div>
@@ -83,15 +99,21 @@ export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
                             {formattedCurrency(data.totalProfit)}
                         
                             </p>
-                            {isIncrease(data.totalProfitVariationRate) ?
-                            <p className="text-green-500 text-xs flex items-center gap-1 justify-start">
+                            {data.totalProfitVariationRate > 1 ?
+                            <p className="text-green-500 text-xs flex items-center justify-start">
                             +{formattedVariationRate(data.totalProfitVariationRate)}%
                             <TrendingUp size={15}/>
-                            </p>:
+                            </p>
+                            :
+                            (data.totalProfitVariationRate > 0 ?
                             <p className="text-red-500 text-xs flex items-center justify-start">
                             {formattedVariationRate(data.totalProfitVariationRate)}%
                             <TrendingDown size={15}/>
-                            </p>}
+                            </p>
+                            : 
+                            <p className="text-gray-500/70 text-xs italic flex items-center justify-start">
+                            Sem variação
+                            </p>)}
                         </div>
                     </div>
                     
@@ -110,7 +132,7 @@ export function CurrentMonthReportCard({data}: CurrentMonthReportCardProps) {
                         </div>
                         
                     </div>)) :
-                    <p className="p-4 rounded bg-gray-100 text-sm ">{REPORTS_CONSTANTS.bestSellingProducts.empty}</p>
+                    <p className="p-4 rounded bg-gray-100 text-sm italic text-gray-500">{REPORTS_CONSTANTS.bestSellingProducts.empty}</p>
                     }
                 </div>
             </div>
