@@ -4,6 +4,7 @@ import { RegisterForm } from '../components/register-form';
 import { useRegister } from '../hooks/use-register';
 import { REGISTER_CONSTANTS } from '../constants/register.constants';
 import { Link } from 'react-router-dom';
+import { useToast } from '../../../hooks/use-toast';
 
 export function RegisterPage() {
   const {
@@ -13,7 +14,13 @@ export function RegisterPage() {
     handleTogglePasswordVisibility,
     onSubmit,
     serverErrors,
-  } = useRegister();
+  } = useRegister(handleSuccess);
+
+  const toast = useToast();
+
+  function handleSuccess() {
+    toast('Sua conta foi criada com sucesso!', 'success', 4000);
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-bg-body">

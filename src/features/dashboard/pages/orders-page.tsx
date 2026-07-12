@@ -6,11 +6,11 @@ import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
 import { type Order, OrderStatus } from '../types/orders.types';
 import { CreateOrderModal } from '../components/create-order-modal';
-import { SuccessMessage } from '../components/success-message';
 import { useAdvanceOrder } from '../hooks/use-advance-order';
 import { useInfoDashboard } from '../hooks/use-info-dashboard';
 import { ModalConfirmation } from '../components/modal-confirmation';
 import { useCancelOrder } from '../hooks/use-cancel-order';
+import { useToast } from '../../../hooks/use-toast';
 
 type ConfirmationAction = 'advance' | 'cancel';
 
@@ -24,26 +24,22 @@ export function OrdersPage() {
   const { setAction } = useDashboardAction();
 
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const toast = useToast();
   const [confirmation, setConfirmation] = useState<{ action: ConfirmationAction; order: Order } | null>(null);
 
   const handleSuccessCreate = () => {
     fetchInfoDashboard();
     fetchOrders();
-    setSuccessMessage(ORDERS_CONSTANTS.messages.successAdd);
-    setTimeout(() => setSuccessMessage(null), 4000);
+    toast(ORDERS_CONSTANTS.messages.successAdd, 'success', 4000)
   };
-
   const handleSuccessAdvance = () => {
     fetchOrders();
-    setSuccessMessage(ORDERS_CONSTANTS.messages.successAdvance);
-    setTimeout(() => setSuccessMessage(null), 4000);
-  };
+    toast(ORDERS_CONSTANTS.messages.successAdvance, 'success', 4000)
 
+  };
   const handleSuccessCancel = () => {
     fetchOrders();
-    setSuccessMessage(ORDERS_CONSTANTS.messages.successCancel);
-    setTimeout(() => setSuccessMessage(null), 4000);
+    toast(ORDERS_CONSTANTS.messages.successCancel, 'success', 4000)
   };
 
   const closeConfirmationState = () => {
@@ -157,7 +153,6 @@ export function OrdersPage() {
           </button>
         ))}
       </div>
-      {successMessage && <SuccessMessage message={successMessage} />}
 
       <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
         <OrderList 

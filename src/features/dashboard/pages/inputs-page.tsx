@@ -8,10 +8,10 @@ import { EditInputModal } from '../components/edit-input-modal';
 import { DeleteInputModal } from '../components/delete-input-modal';
 import { INPUTS_CONSTANTS } from '../constants/inputs.constants';
 import { OVERHEADS_CONSTANTS } from '../constants/overheads.constants';
-import { SuccessMessage } from '../components/success-message';
 import { OverheadList } from '../components/overhead-list';
 import { OverheadModal } from '../components/overhead-modal';
 import { useOverheads } from '../hooks/use-overheads';
+import { useToast } from '../../../hooks/use-toast';
 
 export function InputsPage() {
   const {
@@ -33,30 +33,21 @@ export function InputsPage() {
   const { setAction } = useDashboardAction();
 
   const [activeTab, setActiveTab] = useState<'ingredient' | 'package' | 'overhead'>('ingredient');
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const toast = useToast();
 
   const handleSuccessCreate = () => {
     fetchInputs();
-    setSuccessMessage(INPUTS_CONSTANTS.messages.successAdd);
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 4000);
+    toast(INPUTS_CONSTANTS.messages.successAdd, 'success', 4000);
   };
 
   const handleSuccessEdit = () => {
     fetchInputs();
-    setSuccessMessage(INPUTS_CONSTANTS.messages.successEdit);
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 4000);
+    toast(INPUTS_CONSTANTS.messages.successEdit, 'success', 4000);
   };
 
   const handleSuccessDelete = () => {
     fetchInputs();
-    setSuccessMessage(INPUTS_CONSTANTS.messages.successDelete);
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 4000);
+    toast(INPUTS_CONSTANTS.messages.successDelete, 'success', 4000);
   };
   useEffect(() => {
     setAction({
@@ -100,7 +91,6 @@ export function InputsPage() {
         </button>
       </div>
 
-      {successMessage && <SuccessMessage message={successMessage} />}
 
       <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
         {activeTab === 'ingredient' && (
@@ -154,9 +144,8 @@ export function InputsPage() {
         isOpen={isOverheadModalOpen}
         onClose={handleCloseOverheadModal}
         onSuccess={() => {
-          fetchOverheads();
-          setSuccessMessage(OVERHEADS_CONSTANTS.messages.successSave);
-          setTimeout(() => setSuccessMessage(null), 4000);
+          fetchOverheads()
+          toast(OVERHEADS_CONSTANTS.messages.successSave, 'success', 4000)
         }}
         type={selectedOverheadType}
         overhead={selectedOverhead}

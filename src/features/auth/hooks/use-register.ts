@@ -40,7 +40,7 @@ interface UseRegisterReturn {
   serverErrors: string[] | null;
 }
 
-export function useRegister(): UseRegisterReturn {
+export function useRegister(onSuccess: () => void): UseRegisterReturn {
   const navigate = useNavigate();
   const { login } = useAuthContext();
 
@@ -79,6 +79,7 @@ export function useRegister(): UseRegisterReturn {
       });
 
       if (result.token && result.refreshToken) {
+        onSuccess();
         login({
           token: result.token,
           refreshToken: result.refreshToken,
