@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 import type { UpsertOverheadFormValues } from '../hooks/use-upsert-overhead';
 import { OVERHEADS_CONSTANTS } from '../constants/overheads.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
-import { TipMessage } from './tip-message';
-import { Lightbulb } from 'lucide-react';
+import { HelperMessage } from '../../../components/helper-message';
 
 interface OverheadFormProps {
   form: UseFormReturn<UpsertOverheadFormValues>;
@@ -24,8 +23,6 @@ export function OverheadForm({
   onCancel,
 }: OverheadFormProps) {
   const { register, formState: { errors }, setValue } = form;
-
-  const [showTip, setShowTip] = useState<boolean>(false);
 
   const getTipMessage = () => {
     // 0: Electricity, 1: Labor, 2: Gas, 3: Maintenance
@@ -58,7 +55,7 @@ export function OverheadForm({
   };
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }} className="flex flex-col gap-6 w-full mt-2">
+    <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }} className="flex flex-col gap-4 w-full mt-2">
       {serverErrors && <ServerErrorMessages message={serverErrors} />}
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0 w-full">
@@ -83,20 +80,10 @@ export function OverheadForm({
         )}
       </fieldset>
 
-      <div className="flex flex-col gap-1 -mt-2">
-        <button
-          className={`px-3 py-2.5 w-fit rounded-lg flex gap-2 items-center justify-start border transition-all duration-300 outline-none focus:ring-2 focus:ring-blue-100 ${showTip
-            ? 'bg-blue-50 border-blue-200 text-blue-700 shadow-sm'
-            : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 hover:border-gray-300'
-            }`}
-          type="button"
-          onClick={() => setShowTip(!showTip)}
-        >
-          <Lightbulb className={`transition-colors duration-300 ${showTip ? 'text-blue-500' : 'text-gray-400'}`} size={18} />
-          <span className="text-sm font-medium">{OVERHEADS_CONSTANTS.actions.tip}</span>
-        </button>
-        {showTip && <TipMessage message={getTipMessage()} />}
-      </div>
+      <HelperMessage
+        triggerLabel={OVERHEADS_CONSTANTS.actions.tip}
+        message={getTipMessage()}
+      />
 
 
       <div className="flex flex-col gap-3 mt-4">

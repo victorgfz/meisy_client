@@ -4,6 +4,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { RegisterFormValues } from '../hooks/use-register';
 import { REGISTER_CONSTANTS } from '../constants/register.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
+import { HelperMessage } from '../../../components/helper-message';
 
 interface RegisterFormProps {
   form: UseFormReturn<RegisterFormValues>;
@@ -50,7 +51,7 @@ export function RegisterForm({
       {serverErrors && <ServerErrorMessages message={serverErrors} />}
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
-        <label htmlFor="register-name" className="text-sm font-medium text-text-primary tracking-wide text-xs">
+        <label htmlFor="register-name" className="font-medium text-text-primary tracking-wide text-xs">
           {nameLabel}
         </label>
         <div className="relative w-full">
@@ -73,7 +74,7 @@ export function RegisterForm({
 
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
-        <label htmlFor="register-email" className="text-sm font-medium text-text-primary tracking-wide text-xs">
+        <label htmlFor="register-email" className="font-medium text-text-primary tracking-wide text-xs">
           {emailLabel}
         </label>
         <div className="relative w-full">
@@ -96,7 +97,7 @@ export function RegisterForm({
 
 
       <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
-        <label htmlFor="register-password" className="text-sm font-medium text-text-primary tracking-wide text-xs">
+        <label htmlFor="register-password" className="font-medium text-text-primary tracking-wide text-xs">
           {passwordLabel}
         </label>
         <div className="relative w-full">
@@ -130,9 +131,11 @@ export function RegisterForm({
       </fieldset>
 
       <fieldset className="flex flex-col gap-2 border-none p-0 m-0">
-        <label className="text-sm font-medium text-text-primary tracking-wide text-xs">
-          {joinCompanyLabel}
-        </label>
+        <HelperMessage
+          triggerLabel={joinCompanyLabel}
+          message="Selecione “Sim” se você recebeu o código de uma empresa existente. Caso contrário, selecione “Não” para criar uma nova empresa."
+        />
+
         <div className="flex items-center gap-4 mt-1">
           <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer hover:opacity-80 transition-opacity">
             <input
@@ -157,7 +160,7 @@ export function RegisterForm({
 
       {joinCompany === 'yes' && (
         <fieldset className="flex flex-col gap-1.5 border-none p-0 m-0">
-          <label htmlFor="register-companyCode" className="text-sm font-medium text-text-primary tracking-wide text-xs">
+          <label htmlFor="register-companyCode" className="font-medium text-text-primary tracking-wide text-xs">
             {companyCodeLabel}
           </label>
           <div className="relative w-full">
