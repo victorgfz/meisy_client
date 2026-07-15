@@ -5,6 +5,7 @@ import { PRODUCTS_CONSTANTS } from '../constants/products.constants';
 import { ServerErrorMessages } from '../../../components/server-error-messages';
 import { useInputs } from '../hooks/use-inputs';
 import type { Input } from '../types/inputs.types';
+import { ChevronDown } from 'lucide-react';
 
 const { form: formConstants } = PRODUCTS_CONSTANTS;
 
@@ -48,7 +49,11 @@ export function EditProductForm({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
-    let value = e.target.value.replace(/[^0-9.,]/g, "").replace(/\./g, ',');
+    const sanitizedValue = e.target.value.replace(/[^0-9.,]/g, "").replace(/\./g, ',');
+    const [integerPart, ...decimalParts] = sanitizedValue.split(',');
+    const value = decimalParts.length > 0
+      ? `${integerPart},${decimalParts.join('')}`
+      : integerPart;
     setValue(fieldName, value, { shouldValidate: true });
   };
 
@@ -70,62 +75,59 @@ export function EditProductForm({
     if (items.length === 0) return null;
 
     return (
-      <div className="flex flex-col gap-3 mt-2">
-        <h4 className="text-sm font-semibold text-gray-700">{title}</h4>
-        <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
+      <details open className="group mt-2">
+        <summary className="flex cursor-pointer list-none items-center py-2 text-sm font-semibold text-gray-700 select-none [&::-webkit-details-marker]:hidden">
+          <span>{title}</span>
+          <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" />
+        </summary>
+        <div className="flex flex-col gap-2 pb-1">
           {items.map((item) => {
             const isChecked = watch(`productInputs.${item.id}.isChecked`);
             return (
-              <div key={item.id} className="flex flex-col gap-2 p-3 bg-gray-50 border border-gray-100 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <input
-                    id={`${item.id}`}
-                    type="checkbox"
-                    {...register(`productInputs.${item.id}.isChecked`)}
-                    className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary accent-primary"
-                  />
-                  <label htmlFor={`${item.id}`} className="text-sm font-medium text-gray-700 flex-1">{item.description}</label>
-                </div>
+              <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-100 rounded-lg">
+                <input
+                  id={`${item.id}`}
+                  type="checkbox"
+                  {...register(`productInputs.${item.id}.isChecked`)}
+                  className="w-4 h-4 shrink-0 text-primary rounded border-gray-300 focus:ring-primary accent-primary"
+                />
+                <label htmlFor={`${item.id}`} className="min-w-0 flex-1 text-sm font-medium text-gray-700">{item.description}</label>
 
                 {isChecked && (
-                  <div className="flex flex-row items-center gap-2 pl-7">
-                    <div className="flex flex-row items-center border border-gray-200 rounded-lg focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/50 transition-all bg-white flex-1 h-9 overflow-hidden">
-                      <input
-                        type="text"
-                        placeholder={formConstants.amountInputPlaceholder}
-                        {...register(`productInputs.${item.id}.amount`)}
-                        onChange={(e) => handleAmountChange(e, `productInputs.${item.id}.amount`)}
-                        className="w-full h-full px-3 outline-none text-gray-800 text-sm"
-                      />
-                      <select
-                        {...register(`productInputs.${item.id}.unit`)}
-                        className="border-l border-gray-200 bg-gray-100 px-2 outline-none text-gray-700 text-xs font-medium cursor-pointer h-full"
-                      >
-                        {item.type === 0 ? (
-                          <>
-                            <option value="g">g</option>
-                            <option value="kg">kg</option>
-                            <option value="ml">ml</option>
-                            <option value="l">l</option>
-                            <option value="un">un</option>
-                            <option value="tsp">colher de chá</option>
-                            <option value="tbscp">colher de sopa</option>
-                          </>
-                        ) : (
-                          <>
-                            <option value="un">un</option>
-                          </>
-                        )}
-
-                      </select>
-                    </div>
+                  <div className="flex h-9 shrink-0 items-center overflow-hidden rounded-lg border border-gray-200 bg-white transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/50">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder={formConstants.amountInputPlaceholder}
+                      {...register(`productInputs.${item.id}.amount`)}
+                      onChange={(e) => handleAmountChange(e, `productInputs.${item.id}.amount`)}
+                      className="h-full w-20 shrink-0 px-3 text-sm text-gray-800 outline-none"
+                    />
+                    <select
+                      {...register(`productInputs.${item.id}.unit`)}
+                      className="h-full w-24 shrink-0 border-l border-gray-200 bg-gray-100 px-2 text-xs font-medium text-gray-700 outline-none cursor-pointer"
+                    >
+                      {item.type === 0 ? (
+                        <>
+                          <option value="g">g</option>
+                          <option value="kg">kg</option>
+                          <option value="ml">ml</option>
+                          <option value="l">l</option>
+                          <option value="un">un</option>
+                          <option value="tsp">colher de chá</option>
+                          <option value="tbscp">colher de sopa</option>
+                        </>
+                      ) : (
+                        <option value="un">un</option>
+                      )}
+                    </select>
                   </div>
                 )}
               </div>
             );
           })}
         </div>
-      </div>
+      </details>
     );
   };
 
