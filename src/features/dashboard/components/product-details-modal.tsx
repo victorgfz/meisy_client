@@ -17,6 +17,13 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
   const { productDetail, isLoading, error } = useProductDetail(isOpen ? productId : null);
 
   const getUnitName = (value: number, enumObj: typeof MeasurementUnit | typeof ProductionMeasurementUnit) => {
+        console.log(value)
+
+    console.log(Object.keys(enumObj).find(key => (enumObj as Record<string, string | number>)[key] === value))
+    if(value === 4) return ' un.';
+    else if(value === 5) return ' col. chá';
+    else if(value === 6) return ' col. sopa';
+
     return Object.keys(enumObj).find(key => (enumObj as Record<string, string | number>)[key] === value) || value;
   }
   const getOverheadName = (type: number) => {
@@ -69,7 +76,7 @@ export function ProductDetailsModal({ isOpen, productId, onClose }: ProductDetai
                 {PRODUCTS_CONSTANTS.form.amountLabel}
               </span>
               <div className="w-full py-3 px-4 rounded-lg border border-gray-200 bg-gray-50 text-gray-800">
-                {productDetail.amount.toString().replace('.', ',')} {getUnitName(productDetail.measurementUnit, MeasurementUnit)}
+                {productDetail.amount.toString().replace('.', ',')} {getUnitName(productDetail.measurementUnit, ProductionMeasurementUnit)}
               </div>
             </div>
 

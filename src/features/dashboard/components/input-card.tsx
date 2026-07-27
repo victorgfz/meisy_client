@@ -20,6 +20,7 @@ export function InputCard({ item, onEdit, onDelete }: InputCardProps) {
   };
 
   const getUnitName = (value: number, enumValue: typeof MeasurementUnit) => {
+    if(value === 4) return ' un.';
     return Object.keys(enumValue).find(key => (enumValue as Record<string, string | number>)[key] === value) || value;
   };
 

@@ -21,9 +21,9 @@ export function ProductCard({ item, onEdit, onDelete, onViewDetail }: ProductCar
   };
 
   const getUnitName = (value: number, enumValue: typeof MeasurementUnit) => {
+    if(value === 4) return ' un.';
     return Object.keys(enumValue).find(key => (enumValue as Record<string, string | number>)[key] === value) || value;
   };
-
   const formatDate = (date: Date | string) => {
     return formatDistanceToNow(new Date(date), { locale: ptBR, addSuffix: true });
   };
