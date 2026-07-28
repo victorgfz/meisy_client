@@ -18,7 +18,7 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
 
-  const formatDate = (date: string | Date) => new Date(date).toLocaleDateString('pt-BR');
+  const formatDate = (date: string | Date) => new Date(date).toLocaleString('pt-BR');
   const formatDateToNow = (date: Date | string) => {
     return formatDistanceToNow(new Date(date), { locale: ptBR, addSuffix: true });
   };
