@@ -64,5 +64,16 @@ export const PRODUCTS_CONSTANTS = {
     successAdd: 'Produto cadastrado com sucesso!',
     successEdit: 'Produto atualizado com sucesso!',
     successDelete: 'Produto excluído com sucesso!'
+  },
+  filterSort: {
+    sortOptions: [
+      { label: 'Alfabética (A-Z)', shortLabel: 'A-Z', value: 'alpha-asc', direction: 'asc' as const },
+      { label: 'Alfabética (Z-A)', shortLabel: 'A-Z', value: 'alpha-desc', direction: 'desc' as const },
+      { label: 'Preço (menor → maior)', shortLabel: 'Preço', value: 'price-asc', direction: 'asc' as const },
+      { label: 'Preço (maior → menor)', shortLabel: 'Preço', value: 'price-desc', direction: 'desc' as const },
+      { label: 'Mais recentes', shortLabel: 'Data', value: 'updated-desc', direction: 'desc' as const },
+      { label: 'Mais antigos', shortLabel: 'Data', value: 'updated-asc', direction: 'asc' as const },
+    ],
+    noResults: 'Nenhum produto encontrado com os filtros aplicados.',
   }
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useOrders } from '../hooks/use-orders';
 import { OrderList } from '../components/order-list';
@@ -11,15 +11,19 @@ import { useInfoDashboard } from '../hooks/use-info-dashboard';
 import { ModalConfirmation } from '../components/modal-confirmation';
 import { useCancelOrder } from '../hooks/use-cancel-order';
 import { useToast } from '../../../hooks/use-toast';
+import { FilterBar } from '../components/filter-bar';
+import { useFilterSort } from '../hooks/use-filter-sort';
+import { useProducts } from '../hooks/use-products';
 
 type ConfirmationAction = 'advance' | 'cancel';
 
 export function OrdersPage() {
   const {
     pendingOrders, preparingOrders, readyOrders, completedOrders, isLoading, handleCreate,
-    isCreateModalOpen, setIsCreateModalOpen, fetchOrders,
+    isCreateModalOpen, setIsCreateModalOpen, fetchOrders, orders,
   } = useOrders();
   const { fetchInfoDashboard } = useInfoDashboard();
+  const { products } = useProducts();
 
   const { setAction } = useDashboardAction();
 
@@ -100,8 +104,90 @@ export function OrdersPage() {
     return () => setAction(null);
   }, [setAction, handleCreate]);
 
-  const getActiveList = () => {
+  // --- Filter & Sort ---
 
+  // Unique sellers from all orders
+  const sellerOptions = useMemo(() => {
+    const sellerMap = new Map<number, string>();
+    for (const order of orders) {
+      if (order.seller) {
+        sellerMap.set(order.seller.id, order.seller.name);
+      }
+    }
+    return Array.from(sellerMap.entries()).map(([id, name]) => ({
+      label: name,
+      value: `seller-${id}`,
+    }));
+  }, [orders]);
+
+  // Product options from loaded products
+  const productOptions = useMemo(() => {
+    return products.map((p) => ({
+      label: p.description,
+      value: `product-${p.id}`,
+    }));
+  }, [products]);
+
+  const filterGroups = useMemo(() => {
+    const groups = [];
+    if (sellerOptions.length > 0) {
+      groups.push({ label: 'Por Vendedor', options: sellerOptions });
+    }
+    if (productOptions.length > 0) {
+      groups.push({ label: 'Por Produto', options: productOptions });
+    }
+    return groups;
+  }, [sellerOptions, productOptions]);
+
+  // Filter function
+  const filterFn = useCallback(
+    (order: Order, activeFilters: string[]) => {
+      const sellerFilters = activeFilters
+        .filter((f) => f.startsWith('seller-'))
+        .map((f) => Number(f.replace('seller-', '')));
+
+      const productFilters = activeFilters
+        .filter((f) => f.startsWith('product-'))
+        .map((f) => Number(f.replace('product-', '')));
+
+      const matchesSeller = sellerFilters.length === 0 ||
+        (order.seller && sellerFilters.includes(order.seller.id));
+
+      const orderProductIds = (order.orderProducts ?? []).map((op) => op.id);
+      const matchesProduct = productFilters.length === 0 ||
+        productFilters.some((pid) => orderProductIds.includes(pid));
+
+      return matchesSeller && matchesProduct;
+    },
+    []
+  );
+
+  // Sort function
+  const sortFn = useCallback((a: Order, b: Order, sortKey: string) => {
+    switch (sortKey) {
+      case 'delivery-asc':
+        return new Date(a.deliveryDate).getTime() - new Date(b.deliveryDate).getTime();
+      case 'delivery-desc':
+        return new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime();
+      case 'created-desc':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      case 'created-asc':
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      case 'updated-desc':
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      case 'updated-asc':
+        return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+      case 'total-desc':
+        return b.totalPrice - a.totalPrice;
+      case 'total-asc':
+        return a.totalPrice - b.totalPrice;
+      default:
+        return 0;
+    }
+  }, []);
+
+  // Get the raw list for the active tab
+  const getTabList = useCallback(() => {
     switch (activeTab) {
       case OrderStatus.Pending: return pendingOrders;
       case OrderStatus.Preparing: return preparingOrders;
@@ -109,7 +195,21 @@ export function OrdersPage() {
       case OrderStatus.Completed: return completedOrders;
       default: return [];
     }
-  };
+  }, [activeTab, pendingOrders, preparingOrders, readyOrders, completedOrders]);
+
+  const {
+    processedItems,
+    activeFilters,
+    activeSort,
+    setActiveFilters,
+    setActiveSort,
+    clearFilters,
+    hasActiveFilters,
+  } = useFilterSort<Order>({
+    items: getTabList(),
+    filterFn,
+    sortFn,
+  });
 
   const tabs = [
     { id: OrderStatus.Pending, label: ORDERS_CONSTANTS.tabs.pending, count: pendingOrders.length },
@@ -139,7 +239,7 @@ export function OrdersPage() {
     <div className="flex flex-col w-full max-w-6xl mx-auto relative px-4 sm:px-0">
 
 
-      <div className="flex justify-start md:justify-center overflow-x-auto w-full border-b border-gray-300 mb-6 sticky top-0 z-20 pt-8 scrollbar-hide bg-bg-body">
+      <div className="flex justify-start md:justify-center overflow-x-auto w-full border-b border-gray-300 mb-4 sticky top-0 z-20 pt-8 scrollbar-hide bg-bg-body">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -154,9 +254,20 @@ export function OrdersPage() {
         ))}
       </div>
 
+      <FilterBar
+        filterGroups={filterGroups}
+        activeFilters={activeFilters}
+        onFilterChange={setActiveFilters}
+        sortOptions={ORDERS_CONSTANTS.filterSort.sortOptions}
+        activeSort={activeSort}
+        onSortChange={setActiveSort}
+        onClearFilters={clearFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
+
       <section className="animate-in fade-in slide-in-from-bottom-2 duration-300">
         <OrderList 
-          orders={getActiveList()} 
+          orders={processedItems} 
           isLoading={isLoading} 
           onAdvance={(order) => openConfirmation('advance', order)}
           onCancel={(order) => openConfirmation('cancel', order)}

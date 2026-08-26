@@ -39,5 +39,16 @@ export const INPUTS_CONSTANTS = {
     successAdd: 'Insumo cadastrado com sucesso!',
     successEdit: 'Insumo atualizado com sucesso!',
     successDelete: 'Insumo excluído com sucesso!'
+  },
+  filterSort: {
+    sortOptions: [
+      { label: 'Alfabética (A-Z)', shortLabel: 'A-Z', value: 'alpha-asc', direction: 'asc' as const },
+      { label: 'Alfabética (Z-A)', shortLabel: 'A-Z', value: 'alpha-desc', direction: 'desc' as const },
+      { label: 'Custo (menor → maior)', shortLabel: 'Custo', value: 'cost-asc', direction: 'asc' as const },
+      { label: 'Custo (maior → menor)', shortLabel: 'Custo', value: 'cost-desc', direction: 'desc' as const },
+      { label: 'Mais recentes', shortLabel: 'Data', value: 'updated-desc', direction: 'desc' as const },
+      { label: 'Mais antigos', shortLabel: 'Data', value: 'updated-asc', direction: 'asc' as const },
+    ],
+    noResults: 'Nenhum insumo encontrado com os filtros aplicados.',
   }
 };

@@ -68,5 +68,18 @@ export const ORDERS_CONSTANTS = {
     successAdd: 'Pedido adicionado com sucesso!',
     successAdvance: 'Status do pedido avançado com sucesso!',
     successCancel: 'Pedido cancelado com sucesso!',
+  },
+  filterSort: {
+    sortOptions: [
+      { label: 'Entrega (próximas)', shortLabel: 'Entrega', value: 'delivery-asc', direction: 'asc' as const },
+      { label: 'Entrega (distantes)', shortLabel: 'Entrega', value: 'delivery-desc', direction: 'desc' as const },
+      { label: 'Pedido (recentes)', shortLabel: 'Pedido', value: 'created-desc', direction: 'desc' as const },
+      { label: 'Pedido (antigos)', shortLabel: 'Pedido', value: 'created-asc', direction: 'asc' as const },
+      { label: 'Atualização (recentes)', shortLabel: 'Atualização', value: 'updated-desc', direction: 'desc' as const },
+      { label: 'Atualização (antigos)', shortLabel: 'Atualização', value: 'updated-asc', direction: 'asc' as const },
+      { label: 'Valor (maior → menor)', shortLabel: 'Valor', value: 'total-desc', direction: 'desc' as const },
+      { label: 'Valor (menor → maior)', shortLabel: 'Valor', value: 'total-asc', direction: 'asc' as const },
+    ],
+    noResults: 'Nenhum pedido encontrado com os filtros aplicados.',
   }
 };
