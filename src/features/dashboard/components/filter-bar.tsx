@@ -121,7 +121,7 @@ export function FilterBar({
 
             {/* Filter dropdown with groups */}
             {isFilterOpen && (
-              <div className="absolute top-8 left-0 mt-2 w-64 bg-white rounded-2xl shadow-lg border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-8 left-0 mt-2 w-64 bg-white rounded-2xl shadow-lg border border-gray-100 z-15 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="max-h-72 overflow-y-auto p-1.5">
                   {filterGroups.map((group, groupIdx) => (
                     <div key={group.label}>
@@ -197,7 +197,7 @@ export function FilterBar({
 
             {/* Sort dropdown */}
             {isSortOpen && (
-              <div className="absolute top-8 right-0 sm:left-0 sm:right-auto mt-2 w-48 bg-white rounded-2xl shadow-lg border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-8 right-0 sm:left-0 sm:right-auto mt-2 w-48 bg-white rounded-2xl shadow-lg border border-gray-100 z-15 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="p-1.5">
                   {sortOptions.map((option) => {
                     const isActive = activeSort === option.value;
