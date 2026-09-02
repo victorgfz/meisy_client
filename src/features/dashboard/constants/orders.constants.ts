@@ -1,6 +1,7 @@
 export const ORDERS_CONSTANTS = {
   actions: {
     create: 'Novo Pedido',
+    edit: 'Editar',
     cancel: 'Cancelar',
     advanceStatus: 'Avançar',
   },
@@ -35,8 +36,10 @@ export const ORDERS_CONSTANTS = {
   } as Record<number, string>,
   modal: {
     createTitle: 'Adicionar Pedido',
+    editTitle: 'Editar Pedido',
   },
   form: {
+    editModalTitle: 'Editar Pedido',
     deliveryDateLabel: 'Data de Entrega',
     deliveryDatePlaceholder: 'Selecione a data e hora',
     productsSubtitle: 'Produtos do Pedido',
@@ -66,6 +69,7 @@ export const ORDERS_CONSTANTS = {
   },
   messages: {
     successAdd: 'Pedido adicionado com sucesso!',
+    successEdit: 'Pedido editado com sucesso!',
     successAdvance: 'Status do pedido avançado com sucesso!',
     successCancel: 'Pedido cancelado com sucesso!',
   },

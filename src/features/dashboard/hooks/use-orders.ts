@@ -7,6 +7,8 @@ export function useOrders() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState<Order | null>(null);
 
   const fetchOrders = useCallback(async () => {
     
@@ -36,6 +38,11 @@ export function useOrders() {
     setIsCreateModalOpen(true);
   }, []);
 
+  const handleEdit = useCallback((order: Order) => {
+    setItemToEdit(order);
+    setIsEditModalOpen(true);
+  }, []);
+
   return {
     orders,
     pendingOrders,
@@ -45,7 +52,12 @@ export function useOrders() {
     isLoading,
     isCreateModalOpen,
     setIsCreateModalOpen,
+    isEditModalOpen,
+    setIsEditModalOpen,
+    itemToEdit,
+    setItemToEdit,
     fetchOrders,
     handleCreate,
+    handleEdit,
   };
 }

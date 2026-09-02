@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
 import { type Order, OrderStatus } from '../types/orders.types';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
-import { ChevronDown, ChevronUp, User, UserCircle, ArrowRight, Ban, ShoppingCart, CalendarArrowDown, CalendarDays, Check } from 'lucide-react';
+import { ChevronDown, ChevronUp, User, UserCircle, ArrowRight, Ban, Edit, ShoppingCart, CalendarArrowDown, CalendarDays, Check } from 'lucide-react';
 import { formatDistanceToNow, formatRelative, formatDistanceStrict } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-
-
 
 interface OrderCardProps {
   order: Order;
   onAdvance: () => void;
+  onEdit: () => void;
   onCancel: () => void;
 }
 
-export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
+export function OrderCard({ order, onAdvance, onEdit, onCancel }: OrderCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
@@ -143,13 +142,22 @@ export function OrderCard({ order, onAdvance, onCancel }: OrderCardProps) {
           }
         </button>
         {order.status !== OrderStatus.Completed && (
-          <button
-            onClick={(e) => { e.stopPropagation(); onCancel(); }}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-50 hover:bg-red-100 text-red-500 rounded-2xl text-sm font-medium transition-colors"
-          >
-            <Ban className="w-4 h-4" />
-            {ORDERS_CONSTANTS.actions.cancel}
-          </button>
+          <div className="flex-1 flex gap-2">
+            <button
+              onClick={(e) => { e.stopPropagation(); onEdit(); }}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl text-sm font-medium transition-colors"
+            >
+              <Edit className="w-4 h-4" />
+             {/* {ORDERS_CONSTANTS.actions.edit} */}
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onCancel(); }}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-50 hover:bg-red-100 text-red-500 rounded-2xl text-sm font-medium transition-colors"
+            >
+              <Ban className="w-4 h-4" />
+              {/* {ORDERS_CONSTANTS.actions.cancel} */}
+            </button>
+          </div>
         )}
       </div>
       <div className="mt-4">

@@ -6,6 +6,7 @@ import { useDashboardAction } from '../contexts/dashboard-action.context';
 import { ORDERS_CONSTANTS } from '../constants/orders.constants';
 import { type Order, OrderStatus } from '../types/orders.types';
 import { CreateOrderModal } from '../components/create-order-modal';
+import { EditOrderModal } from '../components/edit-order-modal';
 import { useAdvanceOrder } from '../hooks/use-advance-order';
 import { useInfoDashboard } from '../hooks/use-info-dashboard';
 import { ModalConfirmation } from '../components/modal-confirmation';
@@ -20,7 +21,8 @@ type ConfirmationAction = 'advance' | 'cancel';
 export function OrdersPage() {
   const {
     pendingOrders, preparingOrders, readyOrders, completedOrders, isLoading, handleCreate,
-    isCreateModalOpen, setIsCreateModalOpen, fetchOrders, orders,
+    isCreateModalOpen, setIsCreateModalOpen, isEditModalOpen, setIsEditModalOpen,
+    itemToEdit, handleEdit, fetchOrders, orders,
   } = useOrders();
   const { fetchInfoDashboard } = useInfoDashboard();
   const { products } = useProducts();
@@ -35,6 +37,11 @@ export function OrdersPage() {
     fetchInfoDashboard();
     fetchOrders();
     toast(ORDERS_CONSTANTS.messages.successAdd, 'success', 4000)
+  };
+  const handleSuccessEdit = () => {
+    fetchInfoDashboard();
+    fetchOrders();
+    toast(ORDERS_CONSTANTS.messages.successEdit, 'success', 4000);
   };
   const handleSuccessAdvance = () => {
     fetchOrders();
@@ -270,6 +277,7 @@ export function OrdersPage() {
           orders={processedItems} 
           isLoading={isLoading} 
           onAdvance={(order) => openConfirmation('advance', order)}
+          onEdit={(order) => handleEdit(order)}
           onCancel={(order) => openConfirmation('cancel', order)}
         />
       </section>
@@ -278,6 +286,13 @@ export function OrdersPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={handleSuccessCreate}
+      />
+
+      <EditOrderModal
+        isOpen={isEditModalOpen}
+        order={itemToEdit}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={handleSuccessEdit}
       />
 
       <ModalConfirmation

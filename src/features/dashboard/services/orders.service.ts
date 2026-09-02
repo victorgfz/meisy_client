@@ -1,5 +1,5 @@
 import { apiClient } from '../../../lib/api-client';
-import type { CreateOrderRequest } from '../types/orders.types';
+import type { CreateOrderRequest, UpdateOrderRequest } from '../types/orders.types';
 
 export const ordersService = {
   getAll: async () => {
@@ -8,6 +8,10 @@ export const ordersService = {
   },
   create: async (data: CreateOrderRequest) => {
     const response = await apiClient.post('/orders', data);
+    return response.data;
+  },
+  update: async (id: number, data: UpdateOrderRequest) => {
+    const response = await apiClient.put(`/orders/${id}`, data);
     return response.data;
   },
   advanceStatus: async (id: number) => {

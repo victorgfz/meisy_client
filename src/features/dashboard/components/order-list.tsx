@@ -7,10 +7,11 @@ interface OrderListProps {
   orders: Order[];
   isLoading: boolean;
   onAdvance: (order: Order) => void;
+  onEdit: (order: Order) => void;
   onCancel: (order: Order) => void;
 }
 
-export function OrderList({ orders, isLoading, onAdvance, onCancel }: OrderListProps) {
+export function OrderList({ orders, isLoading, onAdvance, onEdit, onCancel }: OrderListProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full animate-pulse">
@@ -32,7 +33,13 @@ export function OrderList({ orders, isLoading, onAdvance, onCancel }: OrderListP
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
       {orders.map((order) => (
-        <OrderCard key={order.id} order={order} onAdvance={() => onAdvance(order)} onCancel={() => onCancel(order)} />
+        <OrderCard
+          key={order.id}
+          order={order}
+          onAdvance={() => onAdvance(order)}
+          onEdit={() => onEdit(order)}
+          onCancel={() => onCancel(order)}
+        />
       ))}
     </div>
   );

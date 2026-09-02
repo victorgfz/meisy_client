@@ -42,3 +42,12 @@ export interface CreateOrderRequest {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UpdateOrderRequest {
+  deliveryDate: string;
+  orderProducts: {
+    productId: number;
+    amount: number;
+  }[];
+  updatedAt: string;
+}
