@@ -87,10 +87,14 @@ export function DashboardHeader({ userName = 'Usuário', companyCode = "Não inf
             <nav className="flex-1 overflow-y-auto py-4">
               <ul className="space-y-1">
                 <li>
-                  <button className="w-full flex items-center gap-3 px-6 py-4 text-text-primary hover:bg-gray-50 transition-colors">
+                  <Link
+                    to="/dashboard/profile"
+                    onClick={toggleDrawer}
+                    className="w-full flex items-center gap-3 px-6 py-4 text-text-primary hover:bg-gray-50 transition-colors"
+                  >
                     <UserIcon className="w-5 h-5 text-text-secondary" />
                     <span>{DASHBOARD_CONSTANTS.menu.profile}</span>
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <Link

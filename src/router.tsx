@@ -11,6 +11,7 @@ import { OrdersPage } from './features/dashboard/pages/orders-page';
 import { ReportsPage } from './features/dashboard/pages/reports-page';
 import { HomePage } from './features/dashboard/pages/home-page';
 import { SettingsPage } from './features/dashboard/pages/settings-page';
+import { ProfilePage } from './features/dashboard/pages/profile-page';
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ export const router = createBrowserRouter([
           {
             path: 'settings',
             element: <SettingsPage />,
+          },
+          {
+            path: 'profile',
+            element: <ProfilePage />,
           }
         ]
       }
