@@ -46,6 +46,17 @@ export const PRODUCTS_CONSTANTS = {
     totalPerServingLabel: "Total por porção",
 
   },
+  costPreview: {
+    title: 'Custo por porção',
+    subtitle: 'Valores calculados para 1 porção do produto',
+    ingredientsLabel: 'Ingredientes',
+    packagingLabel: 'Embalagens',
+    overheadsLabel: 'Custos indiretos',
+    costsLabel: 'Custo por porção',
+    profitLabel: 'Lucro por porção',
+    servingsHint: 'Informe quantas porções a receita rende para calcular o custo por porção.',
+    overheadsHint: 'Preencha o tempo de produção para incluir os custos indiretos.',
+  },
   validation: {
     descriptionMin: 'A descrição deve ter pelo menos 2 caracteres',
     amountRequired: 'A quantidade é obrigatória',

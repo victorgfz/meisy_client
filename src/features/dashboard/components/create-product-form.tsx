@@ -7,6 +7,9 @@ import { useInputs } from '../hooks/use-inputs';
 import type { Input } from '../types/inputs.types';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
+import { useOverheads } from '../hooks/use-overheads';
+import { useProductCost } from '../hooks/use-product-cost';
+import { ProductCostCard } from './product-cost-card';
 
 const { form: formConstants } = PRODUCTS_CONSTANTS;
 
@@ -27,12 +30,16 @@ export function CreateProductForm({
 }: CreateProductFormProps) {
   const [localError, setLocalError] = useState<string | null>(null);
   const { register, watch, formState: { errors }, setValue } = form;
-  const { ingredients, packages, isLoading: isLoadingInputs, fetchInputs } = useInputs();
+  const { inputs, ingredients, packages, isLoading: isLoadingInputs, fetchInputs } = useInputs();
+  const { overheads } = useOverheads();
 
   // Ensure inputs are loaded
   useEffect(() => {
     fetchInputs();
   }, [fetchInputs]);
+
+  const [productInputs, productionTime, servings, price] = watch(['productInputs', 'productionTime', 'servings', 'price']);
+  const productCost = useProductCost({ inputs, overheads, productInputs, productionTime, servings, price });
 
   const getInputClass = (hasError: boolean) => {
     return `w-full py-3 px-4 rounded-lg outline-none border transition-all duration-200 ${hasError ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/50'}`;
@@ -228,6 +235,10 @@ export function CreateProductForm({
           )}
         </fieldset>
       </div>
+
+      {productCost.hasSelectedInputs && (
+        <ProductCostCard cost={productCost} hasOverheads={overheads.length > 0} />
+      )}
 
       <div className="h-px w-full bg-gray-200 mb-2 relative mt-6">
         <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-sm font-bold text-primary">
