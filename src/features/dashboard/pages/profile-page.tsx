@@ -146,7 +146,7 @@ function RankingItem({ user, position }: { user: ProfileCompanyUser; position: n
       <span className="flex-1 min-w-0 flex items-center gap-2">
         <span className="truncate text-text-primary font-medium">{user.name}</span>
         {user.isLoggedUser && (
-          <span className="shrink-0 text-[10px] font-semibold uppercase bg-primary text-white rounded-full px-2 py-0.5">
+          <span className="shrink-0 text-[10px] font-semibold uppercase bg-accent text-white rounded-full px-2 py-0.5">
             {PROFILE_CONSTANTS.ranking.you}
           </span>
         )}

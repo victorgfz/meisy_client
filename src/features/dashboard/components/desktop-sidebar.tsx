@@ -2,6 +2,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Home, ShoppingCart, Utensils, Egg, TrendingUp, UserIcon, LogOut, Settings } from 'lucide-react';
 import { DASHBOARD_CONSTANTS } from '../constants/dashboard.constants';
 import { useAuthContext } from '../../auth/contexts/auth.context';
+import { BrandLogo } from '../../../components/brand-logo';
 
 export function DesktopSidebar() {
   const location = useLocation();
@@ -18,7 +19,7 @@ export function DesktopSidebar() {
   return (
     <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 min-h-screen fixed left-0 top-0 z-40 divide-y divide-gray-100">
       <div className="p-6">
-        <h2 className="text-2xl font-bold bg-gradient-brand bg-clip-text text-transparent">Meisy</h2>
+        <BrandLogo iconClassName="w-10 h-10" textClassName="text-2xl" />
       </div>
 
       <nav className="px-4 py-6">

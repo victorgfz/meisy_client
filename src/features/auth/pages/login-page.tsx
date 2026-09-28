@@ -3,6 +3,7 @@ import { LoginForm } from '../components/login-form';
 import { useLogin } from '../hooks/use-login';
 import { LOGIN_CONSTANTS } from '../constants/login.constants';
 import { Link } from 'react-router-dom';
+import { BrandLogo } from '../../../components/brand-logo';
 
 export function LoginPage() {
   const {
@@ -34,6 +35,8 @@ export function LoginPage() {
 
       <div className="flex-1 md:w-1/2 bg-bg-card rounded-t-[2.5rem] md:rounded-none -mt-8 md:mt-0 z-10 flex flex-col justify-center items-center px-6 py-10 md:py-12 shadow-[0_-8px_30px_rgb(0,0,0,0.04)] md:shadow-none">
         <div className="w-full max-w-md flex flex-col items-center gap-6 md:gap-8">
+          <BrandLogo iconClassName="w-20 h-20 md:w-24 md:h-24" textClassName="text-5xl md:text-6xl" />
+
           <LoginForm
             form={form}
             isLoading={isLoading}

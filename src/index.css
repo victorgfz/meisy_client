@@ -40,28 +40,30 @@
 @layer base {
   :root {
     /* Gradient */
-    --gradient-start: #7c5cfc;
-    --gradient-end: #c86dd7;
+    --gradient-start: #6d28d9;
+    --gradient-end: #4c1d95;
 
     /* Brand */
-    --color-primary: #7c5cfc;
-    --color-primary-hover: #6a48e6;
+    --color-primary: #6d28d9;
+    --color-primary-hover: #4c1d95;
+    --color-accent: #ec4899;
+    --color-lilac: #ede4fb;
     --color-success: #4cd080;
     --color-success-hover: #3fbc6e;
 
     /* Text */
-    --color-text-primary: #333333;
-    --color-text-secondary: #999999;
+    --color-text-primary: #1c1030;
+    --color-text-secondary: #5b4b70;
     --color-text-muted: #bbbbbb;
     --color-text-on-gradient: #ffffff;
 
     /* Surfaces */
     --color-bg-card: #ffffff;
-    --color-bg-body: #f5f5f5;
+    --color-bg-body: #f4f0fa;
     --color-border: #e0e0e0;
 
     /* Font */
-    --font-family-base: 'Inter', system-ui, sans-serif;
+    --font-family-base: 'Outfit', system-ui, sans-serif;
 
     /* Radius */
     --radius-card: 2rem;

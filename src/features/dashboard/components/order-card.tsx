@@ -49,7 +49,7 @@ export function OrderCard({ order, onAdvance, onEdit, onCancel }: OrderCardProps
 
         <div className='flex justify-between items-start w-full mb-2'>
           <div className="flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5 text-indigo-600" />
+            <ShoppingCart className="w-5 h-5 text-primary" />
             <h3 className='text-xl font-bold text-gray-900 '>
               #{order.id}
             </h3>

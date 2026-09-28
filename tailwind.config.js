@@ -7,11 +7,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Outfit', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: 'var(--color-primary)',
         'primary-hover': 'var(--color-primary-hover)',
+        accent: 'var(--color-accent)',
+        lilac: 'var(--color-lilac)',
         success: 'var(--color-success)',
         'success-hover': 'var(--color-success-hover)',
         'text-primary': 'var(--color-text-primary)',

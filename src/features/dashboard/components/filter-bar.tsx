@@ -109,7 +109,7 @@ export function FilterBar({
               <Filter size={15} />
               Filtrar
               {hasActiveFilters && (
-                <span className="bg-primary text-white text-[10px] font-bold rounded-full w-[18px] h-[18px] flex items-center justify-center">
+                <span className="bg-accent text-white text-[10px] font-bold rounded-full w-[18px] h-[18px] flex items-center justify-center">
                   {activeFilters.length}
                 </span>
               )}

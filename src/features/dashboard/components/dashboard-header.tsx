@@ -32,9 +32,6 @@ export function DashboardHeader({ userName = 'Usuário', companyCode = "Não inf
     <>
       <header className="flex justify-between items-center w-full pt-6 pb-4 px-6 relative z-10 text-white border-b-[1px] border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-            <UserIcon className="text-primary w-6 h-6" />
-          </div>
           <div className='flex flex-col items-start justify-center gap-2'>
             <h1 className="text-lg font-normal leading-none">
               {DASHBOARD_CONSTANTS.greeting.replace('{name}', userName)}
