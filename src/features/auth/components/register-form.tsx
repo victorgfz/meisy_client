@@ -133,6 +133,7 @@ export function RegisterForm({
       <fieldset className="flex flex-col gap-2 border-none p-0 m-0">
         <HelperMessage
           triggerLabel={joinCompanyLabel}
+          defaultOpen
           message="Selecione “Sim” se você recebeu o código de uma empresa existente. Caso contrário, selecione “Não” para criar uma nova empresa."
         />
 
