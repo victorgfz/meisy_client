@@ -16,7 +16,7 @@ export function useInputs() {
     try {
       setIsLoading(true);
       const response = await inputsService.getAll();
-      setInputs(response);
+      setInputs(Array.isArray(response) ? response : []);
     } catch (error) {
 
       console.error(error);

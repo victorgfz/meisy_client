@@ -15,7 +15,7 @@ export function useOrders() {
     try {
       setIsLoading(true);
       const response = await ordersService.getAll();
-      setOrders(response);
+      setOrders(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error(error);
     } finally {

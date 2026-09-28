@@ -18,7 +18,7 @@ export function useProducts() {
     try {
       setIsLoading(true);
       const response = await productsService.getAll();
-      setProducts(response);
+      setProducts(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error(error);
     } finally {
